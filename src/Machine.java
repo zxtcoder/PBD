@@ -54,8 +54,6 @@ public class Machine {
 			if(pList.get(i).flag==0)
 			    System.out.printf("%f %f %f %f %f %f\n", pList.get(i).x, pList.get(i).z, pList.get(i).s, pList.get(i).vx, pList.get(i).vz, pList.get(i).vs);
 		}
-		
-		
 	}
 	
 	public void run(double tStep, double sTime){
@@ -66,7 +64,6 @@ public class Machine {
 		double outNum=0;
 		eNum=eList.size();
 		while(nowTime<sumTime){
-			System.out.printf("nT=%f\n", nowTime);
 			pNum=pList.size();
     		nowTime=nowTime + dt;
 
@@ -130,9 +127,11 @@ public class Machine {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Machine nm=new Machine();
-		nm.addIonSEType2(nm.pList, 10, 0, 2, 100, 1000, 1, 1, 0.00001, 1, 0.1, 1, 0.1, 1, 0.1);
-		nm.addDriftE(10, 1000000);
-		nm.run(0.1, 1000000);
+		nm.addIonSEType2(nm.pList, 100, 0, 2, 100, 1000, 1, 1, 0.00001, 1, 0.1, 1, 0.1, 1, 0.1);
+		nm.addDriftE(100, 100);
+		nm.addQuadE(100, 100, 1e-10, 1e-10);
+		nm.addQuadE(100, 100, -1e-10, -1e-10);
+		nm.run(0.1, 10000);
 
 	}
 
