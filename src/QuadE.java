@@ -5,7 +5,7 @@ public class QuadE extends Element{
 	private double kx, kz;//grad of the magnet
 	
 	public QuadE(double r, double l, double kxx, double kzz){
-		super(r,l);
+		super(r,l,2);
 		kx=kxx; kz=kzz;
 	}
 
@@ -43,6 +43,7 @@ public class QuadE extends Element{
 		p.s=npm.getValue(4, 0);
 		p.vx=npm.getValue(1, 0)*p.vs;
 		p.vz=npm.getValue(3, 0)*p.vs;
+		if((p.x*p.x + p.z*p.z)>(radius*radius))p.flag=1;
 		p.reset();
 		
 	}

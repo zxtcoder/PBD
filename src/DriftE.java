@@ -2,7 +2,7 @@
 public class DriftE extends Element{
 	
 	public DriftE(double r, double l){
-		super(r,l);
+		super(r,l,1);
 	}
 
 	void calParticle(Particle p, double dt){
@@ -24,6 +24,7 @@ public class DriftE extends Element{
 		p.s=npm.getValue(4, 0);
 		p.vx=npm.getValue(1, 0)*p.vs;
 		p.vz=npm.getValue(3, 0)*p.vs;
+		if((p.x*p.x + p.z*p.z)>(radius*radius))p.flag=1;
 		p.reset();
 		
 	}

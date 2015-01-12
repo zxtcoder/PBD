@@ -5,7 +5,7 @@ public class DiE extends Element{
 	private double betai, betao;
 	
 	public DiE(double r, double l, double nn, double rhoo, double thetaa, double betaii, double betaoo){
-		super(r,l);
+		super(r,l,3);
 		n=nn; rho=rhoo; theta=thetaa;
 		betai=betaii; betao=betaoo;
 	}
@@ -69,6 +69,7 @@ public class DiE extends Element{
 		p.s=npm.getValue(4, 0);
 		p.vx=npm.getValue(1, 0)*p.vs;
 		p.vz=npm.getValue(3, 0)*p.vs;
+		if((p.x*p.x + p.z*p.z)>(radius*radius))p.flag=1;
 		p.reset();
 		
 	}

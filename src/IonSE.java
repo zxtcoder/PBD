@@ -16,7 +16,7 @@ public class IonSE extends Element{
 	private ArrayList<Particle> pList;
 	
 	public IonSE(ArrayList<Particle> pl, double r, double l, double p, double durTT, double beamIntt, double pMasss, double pChargee, double pEnergyy){
-		super(r,l);
+		super(r,l,0);
 		durT=durTT; beamInt=beamIntt;
 		pMass=pMasss; pCharge=pChargee; pEnergy=pEnergyy;
 		ionSType=0;
@@ -42,6 +42,9 @@ public class IonSE extends Element{
 		int i;
 		double x,xp,z,zp,s,sp;
 		double vx, vz, vs;
+		if(rT>this.durT) return;
+
+		rT=rT+dt;
 		int dPNum=(int)(dt*beamInt);
 		if(ionSType==1){
 			for(i=0;i<dPNum;i++){
