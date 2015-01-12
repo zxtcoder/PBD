@@ -78,6 +78,11 @@ public class DiE extends Element{
 //////////////////////////////////////////////////
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		Particle np=new Particle(1,1,1,2,3,2,3,1);
+		double pi=3.14159265358;
+		DiE ndie=new DiE(1,14.137,0.5,9,pi/2,0,0);
+		ndie.calParticle(np, 1, 0);
+		System.out.printf("%f %f %f %f %f %f\n", np.x, np.z, np.s, np.xp, np.zp, np.vs);
 	}
 
 }
