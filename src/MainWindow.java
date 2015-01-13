@@ -22,6 +22,7 @@ public class MainWindow extends JFrame{
 	private Machine mac;
 	private ArrayList<JButton> eleButton;
 	private ActionListener eBListener;
+	private ActionListener bListener;
 	
 //////////////////////////////////////////////////////////////
 	private int sNowIndex;
@@ -55,8 +56,8 @@ public class MainWindow extends JFrame{
 		this.add(spControl);
 		
 		this.menuInit();
-		this.buttonInit();
 		this.listenerInit();
+		this.buttonInit();
 
 		this.setTitle("Particle Beam Designer");
 		this.setSize(800, 600);
@@ -77,10 +78,35 @@ public class MainWindow extends JFrame{
 				drawControlPane();
 			}
 		};
+		bListener=new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				JButton bTmp=(JButton)(e.getSource());
+				if(bTmp==bIonS){
+					mac.addIonSEType2(sNowIndex, mac.pList, 0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+					drawEButton();
+				}
+				else if(bTmp==bDrift){
+					mac.addDriftE(sNowIndex, 0, 0);
+					drawEButton();
+				}
+				else if(bTmp==bQuad){
+					mac.addQuadE(sNowIndex, 0, 0, 0, 0);
+					drawEButton();
+				}
+				else if(bTmp==bDi){
+					mac.addDiE(sNowIndex, 0, 0, 0, 0, 0, 0, 0);
+					drawEButton();
+				}
+				else{
+				}
+				
+			}
+		};
 	}
 	
 	
 	public void menuInit(){
+
 		int i=0;
 		mbar=new JMenuBar();
 		for(i=0;i<fileItem.length;i++){
@@ -95,20 +121,29 @@ public class MainWindow extends JFrame{
 		this.setJMenuBar(mbar);
 	}
 	
+	
+	
+	
 	public void buttonInit(){
-		Icon iIonS=new ImageIcon(getClass().getResource("images/IonS.gif"));
+		Icon iIonS=new ImageIcon(getClass().getResource(PhyC.eleImg[0]));
 		bIonS=new JButton("", iIonS);
-		bIonS.setBackground(Color.BLUE);
 		bIonS.setBounds(10, 5, 48, 48);
+		bIonS.addActionListener(bListener);
 
-		bDrift=new JButton("");
+		iIonS=new ImageIcon(getClass().getResource(PhyC.eleImg[1]));
+		bDrift=new JButton("", iIonS);
 		bDrift.setBounds(60,5, 48, 48);
+		bDrift.addActionListener(bListener);
 
-		bQuad=new JButton("");
+		iIonS=new ImageIcon(getClass().getResource(PhyC.eleImg[2]));
+		bQuad=new JButton("", iIonS);
 		bQuad.setBounds(110,5, 48, 48);
+		bQuad.addActionListener(bListener);
 		
-		bDi=new JButton("");
+		iIonS=new ImageIcon(getClass().getResource(PhyC.eleImg[3]));
+		bDi=new JButton("", iIonS);
 		bDi.setBounds(160,5, 48, 48);
+		bDi.addActionListener(bListener);
 		
 		bDetector=new JButton("");
 		bDetector.setBounds(210, 5, 48, 48);
@@ -121,9 +156,14 @@ public class MainWindow extends JFrame{
 		//this.add(pLine);
 	}
 
+	
+	
 	public void drawEButton(){
 		int i=0,name=-1;
 		Icon iconTmp;
+		clearEButton();
+		this.repaint();
+
 		for(i=0;i<mac.eList.size();i++){
 			name=mac.eList.get(i).name;
 			iconTmp=new ImageIcon(getClass().getResource(PhyC.eleImg[name]));
@@ -135,8 +175,23 @@ public class MainWindow extends JFrame{
 		}
 		eleButton.get(this.sNowIndex).setBackground(Color.RED);
 		pLine.setPreferredSize(new Dimension((mac.eList.size()+2)*50, 130));
+		this.repaint();
+
 	}
 
+	public void clearEButton(){
+		int i=0;
+		for(i=0;i<this.eleButton.size();i++){
+			this.pLine.remove(eleButton.get(i));
+		}
+		
+	}
+	
+	public void removeEButton(){
+		
+	}
+	
+	
 	
 	public void drawControlPane(){
 	}
@@ -144,7 +199,7 @@ public class MainWindow extends JFrame{
 	////////////////////////////////////////////////////////
 	public static void main(String[] args) {
 		MainWindow mw=new MainWindow();
-		for(int i=0;i<10;i++){
+		for(int i=0;i<5;i++){
 		    mw.mac.addQuadE(i, 10, 100, 1, 1);
 		}
 		mw.drawEButton();
