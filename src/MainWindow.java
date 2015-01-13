@@ -11,7 +11,7 @@ public class MainWindow extends JFrame{
 	private JLabel label1;
 	private JButton bIonS, bDrift, bQuad, bDi;
 	private JButton bDetector;
-	private JButton bDel, bRun, bDrawReal, bLog;
+	private JButton bDel, bRunControl, bDrawReal, bLog;
 	private JPanel pLine, pControl;
 	private JScrollPane spLine, spControl;
 	
@@ -79,7 +79,7 @@ public class MainWindow extends JFrame{
 				eleButton.get(sNowIndex).setBackground(Color.BLACK);
 				sNowIndex=index;
 				eleButton.get(sNowIndex).setBackground(Color.RED);
-				drawControlPane();
+				drawControlPane("element");
 			}
 		};
 		bListener=new ActionListener(){
@@ -107,8 +107,10 @@ public class MainWindow extends JFrame{
 					    drawEButton();
 					}
 				}
-				else{
+				else if(bTmp==bRunControl){
+					drawControlPane("runcontrol");
 				}
+				else{}
 				
 			}
 		};
@@ -130,8 +132,6 @@ public class MainWindow extends JFrame{
 		}
 		this.setJMenuBar(mbar);
 	}
-	
-	
 	
 	
 	public void buttonInit(){
@@ -169,9 +169,9 @@ public class MainWindow extends JFrame{
 		bDrawReal.addActionListener(bListener);
 
     	iIonS=new ImageIcon(getClass().getResource(PhyC.bImg[2]));
-		bRun=new JButton("", iIonS);
-		bRun.setBounds(368, 20, 32, 32);
-		bRun.addActionListener(bListener);
+		bRunControl=new JButton("", iIonS);
+		bRunControl.setBounds(368, 20, 32, 32);
+		bRunControl.addActionListener(bListener);
 
     	iIonS=new ImageIcon(getClass().getResource(PhyC.bImg[3]));
 		bLog=new JButton("", iIonS);
@@ -186,7 +186,7 @@ public class MainWindow extends JFrame{
 		this.add(bDetector);
 		this.add(bDel);
 		this.add(bDrawReal);
-		this.add(bRun);
+		this.add(bRunControl);
 		this.add(bLog);
 		//this.add(pLine);
 	}
@@ -234,26 +234,64 @@ public class MainWindow extends JFrame{
 	}
 	
 	
-	public void drawControlPane(){
-		int eleName=mac.eList.get(sNowIndex).name;
+	public void drawControlPane(String type){
 		int i=0;
 		for(i=0;i<controlItem.size();i++)
 			pControl.remove((Component)controlItem.get(i));
 		controlItem.clear();
-		if(eleName==0){//IonS
-			ionsControl();
+		if(type=="element"){
+		    int eleName=mac.eList.get(sNowIndex).name;
+		    if(eleName==0){//IonS
+			    ionsControl();
+		    }
+	    	else if(eleName==1){//Drift
+		    	driftControl();
+	    	}
+		    else if(eleName==2){//Quad
+			    quadControl();
+		    }
+		    else if(eleName==3){//Di
+			    diControl();
+		    }
+		    else{}
 		}
-		else if(eleName==1){//Drift
-			driftControl();
-		}
-		else if(eleName==2){//Quad
-			quadControl();
-		}
-		else if(eleName==3){//Di
-			diControl();
-		}
-		else{}
+		else if(type=="runcontrol") runControl();
 	}
+	
+	public void runControl(){
+		Icon iconTmp=new ImageIcon(getClass().getResource(PhyC.bImg[4]));
+		JButton bSave=new JButton("",iconTmp); bSave.setBounds(5, 5, 32, 32);
+		JLabel lRunTime=new JLabel("T(s)"); lRunTime.setBounds(5,40,50,25);
+		JLabel ldt=new JLabel("dt(s)"); ldt.setBounds(5,70,50,25);
+		JLabel lLogStep=new JLabel("LStep"); lLogStep.setBounds(5,100,50,25);
+		JLabel lLogName=new JLabel("LName"); lLogName.setBounds(5,130,50,25);
+
+		JTextField tRunTime=new JTextField(); tRunTime.setBounds(60,40,300,25);
+    	JTextField tdt=new JTextField(); tdt.setBounds(60,70,300,25);
+    	JTextField tLogStep=new JTextField(); tLogStep.setBounds(60,100,300,25);
+    	JTextField tLogName=new JTextField(); tLogName.setBounds(60,130,300,25);
+		
+		
+		controlItem.add(bSave); pControl.add(bSave);
+		controlItem.add(lRunTime);pControl.add(lRunTime); controlItem.add(tRunTime);pControl.add(tRunTime);
+		controlItem.add(ldt);pControl.add(ldt); controlItem.add(tdt);pControl.add(tdt);
+		controlItem.add(tLogStep);pControl.add(tLogStep); controlItem.add(lLogStep);pControl.add(lLogStep);
+		controlItem.add(tLogName);pControl.add(tLogName); controlItem.add(lLogName);pControl.add(lLogName);
+		
+		tRunTime.setText(Double.toString(mac.sumTime));
+		tdt.setText(Double.toString(mac.dt));
+		
+		bSave.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				mac.sumTime=Double.valueOf(tRunTime.getText());
+				mac.dt=Double.valueOf(tdt.getText());
+			}
+		});
+		
+		this.repaint();
+	}
+	
+	
 	
 	public void driftControl(){
 		Icon iconTmp=new ImageIcon(getClass().getResource(PhyC.bImg[4]));
@@ -455,8 +493,6 @@ public class MainWindow extends JFrame{
 		
 		this.repaint();
 	}
-	
-	
 	
 	
 	public void quadControl(){
