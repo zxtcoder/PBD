@@ -43,7 +43,7 @@ public class MainWindow extends JFrame{
 		pLine.setPreferredSize(new Dimension(800,100));
 		//pLine.setBorder(new LineBorder(Color.RED));
 		JScrollPane spLine=new JScrollPane(pLine);
-		spLine.setBounds(10, 60, 770, 130);
+		spLine.setBounds(10, 80, 770, 130);
 		spLine.setSize(770,130);
 
 		
@@ -53,7 +53,7 @@ public class MainWindow extends JFrame{
 		//pControl.setBorder(new LineBorder(Color.RED));
 		//pControl.setBounds(10, 370, 770, 200);
 		spControl=new JScrollPane(pControl);
-		spControl.setBounds(10,200,770,300);
+		spControl.setBounds(10,220,770,300);
 	
 		
 		this.add(spLine);
@@ -76,7 +76,7 @@ public class MainWindow extends JFrame{
 			public void actionPerformed(ActionEvent e){
 				JButton bTmp=(JButton)(e.getSource());
 				int index=eleButton.indexOf(bTmp);
-				eleButton.get(sNowIndex).setBackground(Color.BLACK);
+				eleButton.get(sNowIndex).setBackground(Color.ORANGE);
 				sNowIndex=index;
 				eleButton.get(sNowIndex).setBackground(Color.RED);
 				drawControlPane("element");
@@ -137,45 +137,42 @@ public class MainWindow extends JFrame{
 	public void buttonInit(){
 		Icon iIonS=new ImageIcon(getClass().getResource(PhyC.eleImg[0]));
 		bIonS=new JButton("", iIonS);
-		bIonS.setBounds(10, 5, 48, 48);
+		bIonS.setBounds(10, 5, 48, 70);
 		bIonS.addActionListener(bListener);
 
 		iIonS=new ImageIcon(getClass().getResource(PhyC.eleImg[1]));
 		bDrift=new JButton("", iIonS);
-		bDrift.setBounds(60,5, 48, 48);
+		bDrift.setBounds(60,5, 48, 70);
 		bDrift.addActionListener(bListener);
 
 		iIonS=new ImageIcon(getClass().getResource(PhyC.eleImg[2]));
 		bQuad=new JButton("", iIonS);
-		bQuad.setBounds(110,5, 48, 48);
+		bQuad.setBounds(110,5, 48, 70);
 		bQuad.addActionListener(bListener);
 		
 		iIonS=new ImageIcon(getClass().getResource(PhyC.eleImg[3]));
 		bDi=new JButton("", iIonS);
-		bDi.setBounds(160,5, 48, 48);
+		bDi.setBounds(160,5, 48, 70);
 		bDi.addActionListener(bListener);
-		
-		bDetector=new JButton("");
-		bDetector.setBounds(210, 5, 48, 48);
 		
     	iIonS=new ImageIcon(getClass().getResource(PhyC.bImg[0]));
 		bDel=new JButton("", iIonS);
-		bDel.setBounds(300, 20, 32, 32);
+		bDel.setBounds(300, 40, 32, 32);
 		bDel.addActionListener(bListener);
 
     	iIonS=new ImageIcon(getClass().getResource(PhyC.bImg[1]));
 		bDrawReal=new JButton("", iIonS);
-		bDrawReal.setBounds(334, 20, 32, 32);
+		bDrawReal.setBounds(334, 40, 32, 32);
 		bDrawReal.addActionListener(bListener);
 
     	iIonS=new ImageIcon(getClass().getResource(PhyC.bImg[2]));
 		bRunControl=new JButton("", iIonS);
-		bRunControl.setBounds(368, 20, 32, 32);
+		bRunControl.setBounds(368, 40, 32, 32);
 		bRunControl.addActionListener(bListener);
 
     	iIonS=new ImageIcon(getClass().getResource(PhyC.bImg[3]));
 		bLog=new JButton("", iIonS);
-		bLog.setBounds(402, 20, 32, 32);
+		bLog.setBounds(402, 40, 32, 32);
 		bLog.addActionListener(bListener);
 
 
@@ -183,7 +180,6 @@ public class MainWindow extends JFrame{
 		this.add(bDrift);
 		this.add(bQuad);
 		this.add(bDi);
-		this.add(bDetector);
 		this.add(bDel);
 		this.add(bDrawReal);
 		this.add(bRunControl);
@@ -203,7 +199,7 @@ public class MainWindow extends JFrame{
 			iconTmp=new ImageIcon(getClass().getResource(PhyC.eleImg[name]));
 			eleButton.add(new JButton("",iconTmp));
 			eleButton.get(i).setBounds(10+i*50,10,50,80);
-			eleButton.get(i).setBackground(Color.BLACK);
+			eleButton.get(i).setBackground(Color.ORANGE);
 			eleButton.get(i).addActionListener(this.eBListener);
 			pLine.add(eleButton.get(i));
 		}
