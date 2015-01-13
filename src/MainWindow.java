@@ -241,6 +241,7 @@ public class MainWindow extends JFrame{
 			pControl.remove((Component)controlItem.get(i));
 		controlItem.clear();
 		if(eleName==0){//IonS
+			ionsControl();
 		}
 		else if(eleName==1){//Drift
 			driftControl();
@@ -287,6 +288,101 @@ public class MainWindow extends JFrame{
 				double dL=Double.valueOf(tL.getText());
 				((DriftE)mac.eList.get(sNowIndex)).radius=dR;
 				((DriftE)mac.eList.get(sNowIndex)).length=dL;
+			}
+		});
+		
+		this.repaint();
+	}
+	
+	
+	public void ionsControl(){
+		Icon iconTmp=new ImageIcon(getClass().getResource(PhyC.bImg[4]));
+		JButton bSave=new JButton("",iconTmp); bSave.setBounds(5, 5, 32, 32);
+
+		JLabel lR=new JLabel("R(m)"); lR.setBounds(5,40,50,25);
+		JLabel lL=new JLabel("L(m)"); lL.setBounds(5,70,50,25);
+		JLabel lp=new JLabel("pos(m)"); lp.setBounds(5,100,50,25);
+		JLabel ldurT=new JLabel("ΔT(s)"); ldurT.setBounds(5,130,50,25);
+		JLabel lbeamInt=new JLabel("flux/s"); lbeamInt.setBounds(5,160,50,25);
+		JLabel lmass=new JLabel("m(u)"); lmass.setBounds(5,190,50,25);
+		JLabel lcharge=new JLabel("q(e)"); lcharge.setBounds(5,220,50,25);
+		JLabel lenergy=new JLabel("E(eV)"); lenergy.setBounds(5,250,50,25);
+
+		JLabel lxA=new JLabel("Δx(m)"); lxA.setBounds(360,40,50,25);
+		JLabel lxpA=new JLabel("Δxp"); lxpA.setBounds(360,70,50,25);
+		JLabel lzA=new JLabel("Δz(m)"); lzA.setBounds(360,100,50,25);
+		JLabel lzpA=new JLabel("Δzp"); lzpA.setBounds(360,130,50,25);
+		JLabel lsA=new JLabel("Δs(m)"); lsA.setBounds(360,160,50,25);
+		JLabel lspA=new JLabel("Δsp"); lspA.setBounds(360,190,50,25);
+
+		JTextField tR=new JTextField(); tR.setBounds(60,40,250,25);
+    	JTextField tL=new JTextField(); tL.setBounds(60,70,250,25);
+    	JTextField tp=new JTextField(); tp.setBounds(60,100,250,25);
+		JTextField tdurT=new JTextField(); tdurT.setBounds(60,130,250,25);
+		JTextField tbeamInt=new JTextField(); tbeamInt.setBounds(60,160,250,25);
+		JTextField tmass=new JTextField(); tmass.setBounds(60,190,250,25);
+		JTextField tcharge=new JTextField(); tcharge.setBounds(60,220,250,25);
+		JTextField tenergy=new JTextField(); tenergy.setBounds(60,250,250,25);
+
+		JTextField txA=new JTextField(); txA.setBounds(410,40,250,25);
+		JTextField txpA=new JTextField(); txpA.setBounds(410,70,250,25);
+		JTextField tzA=new JTextField(); tzA.setBounds(410,100,250,25);
+		JTextField tzpA=new JTextField(); tzpA.setBounds(410,130,250,25);
+		JTextField tsA=new JTextField(); tsA.setBounds(410,160,250,25);
+		JTextField tspA=new JTextField(); tspA.setBounds(410,190,250,25);	
+		
+		controlItem.add(bSave); pControl.add(bSave);
+		controlItem.add(lR);pControl.add(lR); controlItem.add(tR);pControl.add(tR);
+		controlItem.add(lL);pControl.add(lL); controlItem.add(tL);pControl.add(tL);
+		controlItem.add(lp);pControl.add(lp); controlItem.add(tp);pControl.add(tp);
+		controlItem.add(ldurT);pControl.add(ldurT); controlItem.add(tdurT);pControl.add(tdurT);
+		controlItem.add(lbeamInt);pControl.add(lbeamInt); controlItem.add(tbeamInt);pControl.add(tbeamInt);
+		controlItem.add(lmass);pControl.add(lmass); controlItem.add(tmass);pControl.add(tmass);
+		controlItem.add(lcharge);pControl.add(lcharge); controlItem.add(tcharge);pControl.add(tcharge);
+		controlItem.add(lenergy);pControl.add(lenergy); controlItem.add(tenergy);pControl.add(tenergy);
+
+		controlItem.add(lxA);pControl.add(lxA); controlItem.add(txA);pControl.add(txA);
+		controlItem.add(lzA);pControl.add(lzA); controlItem.add(tzA);pControl.add(tzA);
+		controlItem.add(lsA);pControl.add(lsA); controlItem.add(tsA);pControl.add(tsA);
+		controlItem.add(lxpA);pControl.add(lxpA); controlItem.add(txpA);pControl.add(txpA);
+		controlItem.add(lzpA);pControl.add(lzpA); controlItem.add(tzpA);pControl.add(tzpA);
+		controlItem.add(lspA);pControl.add(lspA); controlItem.add(tspA);pControl.add(tspA);
+		
+		String rTmp=Double.toString(((IonSE)mac.eList.get(sNowIndex)).radius);
+		String lTmp=Double.toString(((IonSE)mac.eList.get(sNowIndex)).length);
+		String pTmp=Double.toString(((IonSE)mac.eList.get(sNowIndex)).position);
+		String durTTmp=Double.toString(((IonSE)mac.eList.get(sNowIndex)).durT);
+		String beamIntTmp=Double.toString(((IonSE)mac.eList.get(sNowIndex)).beamInt);
+		String massTmp=Double.toString(((IonSE)mac.eList.get(sNowIndex)).pMass);
+		String chargeTmp=Double.toString(((IonSE)mac.eList.get(sNowIndex)).pCharge);
+		String energyTmp=Double.toString(((IonSE)mac.eList.get(sNowIndex)).pEnergy);
+		String xATmp=Double.toString(((IonSE)mac.eList.get(sNowIndex)).xA);
+		String xpATmp=Double.toString(((IonSE)mac.eList.get(sNowIndex)).xpA);
+		String zATmp=Double.toString(((IonSE)mac.eList.get(sNowIndex)).zA);
+		String zpATmp=Double.toString(((IonSE)mac.eList.get(sNowIndex)).zpA);
+		String sATmp=Double.toString(((IonSE)mac.eList.get(sNowIndex)).sA);
+		String spATmp=Double.toString(((IonSE)mac.eList.get(sNowIndex)).spA);
+
+		tR.setText(rTmp); tL.setText(lTmp); tp.setText(pTmp); tdurT.setText(durTTmp);
+		tbeamInt.setText(beamIntTmp); tmass.setText(massTmp); tcharge.setText(chargeTmp); tenergy.setText(energyTmp);
+		txA.setText(xATmp); txpA.setText(xpATmp); tzA.setText(zATmp); tzpA.setText(zpATmp); tsA.setText(sATmp); tspA.setText(spATmp); 
+
+		bSave.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				double dR=Double.valueOf(tR.getText()); double dL=Double.valueOf(tL.getText());
+				double dp=Double.valueOf(tp.getText()); double ddurT=Double.valueOf(tdurT.getText());
+				double dbeamInt=Double.valueOf(tbeamInt.getText()); double dmass=Double.valueOf(tmass.getText());
+				double dcharge=Double.valueOf(tcharge.getText()); double denergy=Double.valueOf(tenergy.getText());
+				double dxA=Double.valueOf(txA.getText()); double dxpA=Double.valueOf(txpA.getText());
+				double dzA=Double.valueOf(tzA.getText()); double dzpA=Double.valueOf(tzpA.getText());
+				double dsA=Double.valueOf(tsA.getText()); double dspA=Double.valueOf(tspA.getText());
+				((IonSE)mac.eList.get(sNowIndex)).radius=dR; ((IonSE)mac.eList.get(sNowIndex)).length=dL;
+				((IonSE)mac.eList.get(sNowIndex)).position=dp; ((IonSE)mac.eList.get(sNowIndex)).durT=ddurT;
+				((IonSE)mac.eList.get(sNowIndex)).beamInt=dbeamInt; ((IonSE)mac.eList.get(sNowIndex)).pMass=dmass;
+				((IonSE)mac.eList.get(sNowIndex)).pCharge=dcharge; ((IonSE)mac.eList.get(sNowIndex)).pEnergy=denergy;
+				((IonSE)mac.eList.get(sNowIndex)).xA=dxA; ((IonSE)mac.eList.get(sNowIndex)).xpA=dxpA;
+				((IonSE)mac.eList.get(sNowIndex)).zA=dzA; ((IonSE)mac.eList.get(sNowIndex)).zpA=dzpA;
+				((IonSE)mac.eList.get(sNowIndex)).sA=dsA; ((IonSE)mac.eList.get(sNowIndex)).spA=dspA;
 			}
 		});
 		

@@ -2,16 +2,16 @@ import java.util.*;
 
 public class IonSE extends Element{
 	
-	private double durT, beamInt;
-	private double pMass, pCharge, pEnergy, vs0;
-	private double rT;
-	private double position;
+	public double durT, beamInt;
+	public double pMass, pCharge, pEnergy, vs0;
+	public double rT;
+	public double position;
 
 	
-	private int ionSType;
+	public int ionSType;
 	
 //////type2////////////////
-	private double xA, xpA, zA, zpA, sA, spA;
+	public double xA, xpA, zA, zpA, sA, spA;
 	
 	private ArrayList<Particle> pList;
 	
