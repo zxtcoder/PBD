@@ -50,8 +50,8 @@ public class Machine {
 	public void outInfo(){
 		int pNum=0, i=0;
 		pNum=pList.size();
-		for(i=0;i<1;i++){
-			if(pList.get(i).flag==0)
+		for(i=0;i<pNum;i++){
+			//if(pList.get(i).flag==0)
 			    System.out.printf("%f %f %f %f %f %f\n", pList.get(i).x, pList.get(i).z, pList.get(i).s, pList.get(i).vx, pList.get(i).vz, pList.get(i).vs);
 		}
 	}
@@ -117,7 +117,6 @@ public class Machine {
 					}
 				}
 			}
-			outInfo();
 		}
 		
 	}
@@ -127,11 +126,12 @@ public class Machine {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Machine nm=new Machine();
-		nm.addIonSEType2(nm.pList, 100, 0, 2, 100, 1000, 1, 1, 0.00001, 1, 0.1, 1, 0.1, 1, 0.1);
-		nm.addDriftE(100, 100);
-		nm.addQuadE(100, 100, 1e-10, 1e-10);
-		nm.addQuadE(100, 100, -1e-10, -1e-10);
-		nm.run(0.1, 10000);
+		nm.addIonSEType2(nm.pList, 100, 0, 2, 0.1, 10000000, 1, 1, 0.00001, 0.1, 0.01, 0.5, 0.01, 1, 0.1);
+		nm.addDriftE(100, 100000);
+		//nm.addQuadE(100, 1000, 1e-10, 1e-10);
+		//nm.addQuadE(100, 1000, -1e-10, -1e-10);
+		nm.run(0.01, 1);
+		nm.outInfo();
 
 	}
 
