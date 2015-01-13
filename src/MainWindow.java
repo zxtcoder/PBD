@@ -12,7 +12,7 @@ public class MainWindow extends JFrame{
 	private JButton bIonS, bDrift, bQuad, bDi;
 	private JButton bDetector;
 	private JButton bDel, bRunControl, bDrawReal, bLog;
-	private JPanel pLine, pControl;
+	private JPanel pLine, pControl, toolBar, eleBar;
 	private JScrollPane spLine, spControl;
 	
 	private JMenuBar mbar;
@@ -53,7 +53,7 @@ public class MainWindow extends JFrame{
 		//pControl.setBorder(new LineBorder(Color.RED));
 		//pControl.setBounds(10, 370, 770, 200);
 		spControl=new JScrollPane(pControl);
-		spControl.setBounds(10,220,770,300);
+		spControl.setBounds(10,250,770,290);
 	
 		
 		this.add(spLine);
@@ -135,55 +135,67 @@ public class MainWindow extends JFrame{
 	
 	
 	public void buttonInit(){
+		eleBar=new JPanel();
+		eleBar.setLayout(null);
+		eleBar.setBounds(10, 5, 770, 80);
+
 		Icon iIonS=new ImageIcon(getClass().getResource(PhyC.eleImg[0]));
 		bIonS=new JButton("", iIonS);
-		bIonS.setBounds(10, 5, 48, 70);
+		bIonS.setBounds(0, 0, 48, 70);
 		bIonS.addActionListener(bListener);
 
 		iIonS=new ImageIcon(getClass().getResource(PhyC.eleImg[1]));
 		bDrift=new JButton("", iIonS);
-		bDrift.setBounds(60,5, 48, 70);
+		bDrift.setBounds(50,0, 48, 70);
 		bDrift.addActionListener(bListener);
 
 		iIonS=new ImageIcon(getClass().getResource(PhyC.eleImg[2]));
 		bQuad=new JButton("", iIonS);
-		bQuad.setBounds(110,5, 48, 70);
+		bQuad.setBounds(100, 0, 48, 70);
 		bQuad.addActionListener(bListener);
 		
 		iIonS=new ImageIcon(getClass().getResource(PhyC.eleImg[3]));
 		bDi=new JButton("", iIonS);
-		bDi.setBounds(160,5, 48, 70);
+		bDi.setBounds(150, 0, 48, 70);
 		bDi.addActionListener(bListener);
+
+		this.add(eleBar);
+		eleBar.add(bIonS);
+		eleBar.add(bDrift);
+		eleBar.add(bQuad);
+		eleBar.add(bDi);
+
+	////////////////////////////////////////////////	
 		
+		toolBar=new JPanel();
+		toolBar.setLayout(null);
+		toolBar.setBounds(10, 215, 770, 40);
+
     	iIonS=new ImageIcon(getClass().getResource(PhyC.bImg[0]));
 		bDel=new JButton("", iIonS);
-		bDel.setBounds(300, 40, 32, 32);
+		bDel.setBounds(0, 0, 32, 32);
 		bDel.addActionListener(bListener);
 
     	iIonS=new ImageIcon(getClass().getResource(PhyC.bImg[1]));
 		bDrawReal=new JButton("", iIonS);
-		bDrawReal.setBounds(334, 40, 32, 32);
+		bDrawReal.setBounds(34, 0, 32, 32);
 		bDrawReal.addActionListener(bListener);
 
     	iIonS=new ImageIcon(getClass().getResource(PhyC.bImg[2]));
 		bRunControl=new JButton("", iIonS);
-		bRunControl.setBounds(368, 40, 32, 32);
+		bRunControl.setBounds(68, 0, 32, 32);
 		bRunControl.addActionListener(bListener);
 
     	iIonS=new ImageIcon(getClass().getResource(PhyC.bImg[3]));
 		bLog=new JButton("", iIonS);
-		bLog.setBounds(402, 40, 32, 32);
+		bLog.setBounds(102, 0, 32, 32);
 		bLog.addActionListener(bListener);
 
-
-		this.add(bIonS);
-		this.add(bDrift);
-		this.add(bQuad);
-		this.add(bDi);
-		this.add(bDel);
-		this.add(bDrawReal);
-		this.add(bRunControl);
-		this.add(bLog);
+		this.add(toolBar);
+		toolBar.add(bDel);
+		toolBar.add(bDrawReal);
+		toolBar.add(bRunControl);
+		toolBar.add(bLog);
 		//this.add(pLine);
 	}
 
