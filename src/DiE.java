@@ -1,8 +1,8 @@
 import java.lang.Math.*;
 
 public class DiE extends Element{
-	private double n, rho, theta;
-	private double betai, betao;
+	public double n, rho, theta;
+	public double betai, betao;
 	
 	public DiE(double r, double l, double nn, double rhoo, double thetaa, double betaii, double betaoo){
 		super(r,l,3);

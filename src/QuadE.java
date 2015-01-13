@@ -2,7 +2,7 @@ import java.lang.Math.*;
 
 public class QuadE extends Element{
 	
-	private double kx, kz;//grad of the magnet
+	public double kx, kz;//grad of the magnet
 	
 	public QuadE(double r, double l, double kxx, double kzz){
 		super(r,l,2);

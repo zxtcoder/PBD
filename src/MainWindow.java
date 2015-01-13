@@ -11,7 +11,7 @@ public class MainWindow extends JFrame{
 	private JLabel label1;
 	private JButton bIonS, bDrift, bQuad, bDi;
 	private JButton bDetector;
-	private JButton bDel, bRun, bDrawReal;
+	private JButton bDel, bRun, bDrawReal, bLog;
 	private JPanel pLine, pControl;
 	private JScrollPane spLine, spControl;
 	
@@ -25,14 +25,17 @@ public class MainWindow extends JFrame{
 	private ActionListener eBListener;
 	private ActionListener bListener;
 	
+	private ArrayList<Object> controlItem;
+	
 //////////////////////////////////////////////////////////////
 	private int sNowIndex;
 	
 /////////////////////////////////////////////////////////////////
 	public MainWindow(){
-		sNowIndex=0;
+		sNowIndex=-1;
 		mac=new Machine();
 		eleButton=new ArrayList<JButton>();
+		controlItem=new ArrayList<Object>();
 		
 		pLine=new JPanel();
 		pLine.setBackground(Color.WHITE);
@@ -83,24 +86,26 @@ public class MainWindow extends JFrame{
 			public void actionPerformed(ActionEvent e){
 				JButton bTmp=(JButton)(e.getSource());
 				if(bTmp==bIonS){
-					mac.addIonSEType2(sNowIndex, mac.pList, 0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+					mac.addIonSEType2(sNowIndex+1, mac.pList, 0,0,0,0,0,0,0,0,0,0,0,0,0,0);
 					drawEButton();
 				}
 				else if(bTmp==bDrift){
-					mac.addDriftE(sNowIndex, 0, 0);
+					mac.addDriftE(sNowIndex+1, 0, 0);
 					drawEButton();
 				}
 				else if(bTmp==bQuad){
-					mac.addQuadE(sNowIndex, 0, 0, 0, 0);
+					mac.addQuadE(sNowIndex+1, 0, 0, 0, 0);
 					drawEButton();
 				}
 				else if(bTmp==bDi){
-					mac.addDiE(sNowIndex, 0, 0, 0, 0, 0, 0, 0);
+					mac.addDiE(sNowIndex+1, 0, 0, 0, 0, 0, 0, 0);
 					drawEButton();
 				}
 				else if(bTmp==bDel){
-					mac.eList.remove(sNowIndex);
-					drawEButton();
+					if(sNowIndex>=0 && sNowIndex<mac.eList.size()){
+					    mac.eList.remove(sNowIndex);
+					    drawEButton();
+					}
 				}
 				else{
 				}
@@ -168,8 +173,10 @@ public class MainWindow extends JFrame{
 		bRun.setBounds(368, 20, 32, 32);
 		bRun.addActionListener(bListener);
 
-
-
+    	iIonS=new ImageIcon(getClass().getResource(PhyC.bImg[3]));
+		bLog=new JButton("", iIonS);
+		bLog.setBounds(402, 20, 32, 32);
+		bLog.addActionListener(bListener);
 
 
 		this.add(bIonS);
@@ -180,10 +187,10 @@ public class MainWindow extends JFrame{
 		this.add(bDel);
 		this.add(bDrawReal);
 		this.add(bRun);
+		this.add(bLog);
 		//this.add(pLine);
 	}
 
-	
 	
 	public void drawEButton(){
 		int i=0,name=-1;
@@ -200,11 +207,22 @@ public class MainWindow extends JFrame{
 			eleButton.get(i).addActionListener(this.eBListener);
 			pLine.add(eleButton.get(i));
 		}
-		eleButton.get(this.sNowIndex).setBackground(Color.RED);
-		pLine.setPreferredSize(new Dimension((mac.eList.size()+2)*50, 130));
+	    pLine.setPreferredSize(new Dimension((mac.eList.size()+2)*50, 130));
+
+        while(sNowIndex>=mac.eList.size()){
+	    	sNowIndex--;
+	    }
+        if(sNowIndex<0 && mac.eList.size()>0){
+        	sNowIndex=0;
+        }
+	    if(sNowIndex>=0 && sNowIndex<mac.eList.size()){
+		     eleButton.get(this.sNowIndex).setBackground(Color.RED);
+	    }
+	    
 		this.repaint();
 
 	}
+
 
 	public void clearEButton(){
 		int i=0;
@@ -215,23 +233,200 @@ public class MainWindow extends JFrame{
 		
 	}
 	
-	public void removeEButton(){
-		
-	}
-	
-	
 	
 	public void drawControlPane(){
+		int eleName=mac.eList.get(sNowIndex).name;
+		int i=0;
+		for(i=0;i<controlItem.size();i++)
+			pControl.remove((Component)controlItem.get(i));
+		controlItem.clear();
+		if(eleName==0){//IonS
+		}
+		else if(eleName==1){//Drift
+			driftControl();
+		}
+		else if(eleName==2){//Quad
+			quadControl();
+		}
+		else if(eleName==3){//Di
+			diControl();
+		}
+		else{}
 	}
 	
+	public void driftControl(){
+		Icon iconTmp=new ImageIcon(getClass().getResource(PhyC.bImg[4]));
+		JButton bSave=new JButton("",iconTmp);
+		bSave.setBounds(5, 5, 32, 32);
+		JLabel lR=new JLabel("R(m)");
+		lR.setBounds(5,40,50,25);
+		JLabel lL=new JLabel("L(m)");
+		lL.setBounds(5,70,50,25);
+
+		JTextField tR=new JTextField();
+		tR.setBounds(60,40,300,25);
+
+    	JTextField tL=new JTextField();
+		tL.setBounds(60,70,300,25);
+		
+		
+		controlItem.add(bSave); pControl.add(bSave);
+		controlItem.add(lR);pControl.add(lR);
+		controlItem.add(lL);pControl.add(lL);
+		controlItem.add(tR);pControl.add(tR);
+		controlItem.add(tL);pControl.add(tL);
+		
+		String rTmp=Double.toString(((DriftE)mac.eList.get(sNowIndex)).radius);
+		String lTmp=Double.toString(((DriftE)mac.eList.get(sNowIndex)).length);
+		tR.setText(rTmp);
+		tL.setText(lTmp);
+		
+		bSave.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				double dR=Double.valueOf(tR.getText());
+				double dL=Double.valueOf(tL.getText());
+				((DriftE)mac.eList.get(sNowIndex)).radius=dR;
+				((DriftE)mac.eList.get(sNowIndex)).length=dL;
+			}
+		});
+		
+		this.repaint();
+	}
+	
+	
+	public void diControl(){
+		Icon iconTmp=new ImageIcon(getClass().getResource(PhyC.bImg[4]));
+		JButton bSave=new JButton("",iconTmp);
+		bSave.setBounds(5, 5, 32, 32);
+		JLabel lR=new JLabel("R(m)"); lR.setBounds(5,40,50,25);
+		JLabel lL=new JLabel("L(m)"); lL.setBounds(5,70,50,25);
+		JLabel ln=new JLabel("n(0-1)"); ln.setBounds(5,100,50,25);
+		JLabel lrho=new JLabel("ρ"); lrho.setBounds(5,130,50,25);
+		JLabel ltheta=new JLabel("θ"); ltheta.setBounds(5,160,50,25);
+		JLabel lbetai=new JLabel("βi"); lbetai.setBounds(5,190,50,25);
+		JLabel lbetao=new JLabel("βo"); lbetao.setBounds(5,220,50,25);
+
+		JTextField tR=new JTextField(); tR.setBounds(60,40,300,25);
+    	JTextField tL=new JTextField(); tL.setBounds(60,70,300,25);
+    	JTextField tn=new JTextField(); tn.setBounds(60,100,300,25);
+    	JTextField trho=new JTextField(); trho.setBounds(60,130,300,25);
+    	JTextField ttheta=new JTextField(); ttheta.setBounds(60,160,300,25);
+    	JTextField tbetai=new JTextField(); tbetai.setBounds(60,190,300,25);
+    	JTextField tbetao=new JTextField(); tbetao.setBounds(60,220,300,25);
+		
+		
+		controlItem.add(bSave); pControl.add(bSave);
+		controlItem.add(lR);pControl.add(lR);
+		controlItem.add(lL);pControl.add(lL);
+		controlItem.add(ln);pControl.add(ln);
+		controlItem.add(lrho);pControl.add(lrho);
+		controlItem.add(ltheta);pControl.add(ltheta);
+		controlItem.add(lbetai);pControl.add(lbetai);
+		controlItem.add(lbetao);pControl.add(lbetao);
+		controlItem.add(tR);pControl.add(tR);
+		controlItem.add(tL);pControl.add(tL);
+		controlItem.add(tn);pControl.add(tn);
+		controlItem.add(trho);pControl.add(trho);
+		controlItem.add(ttheta);pControl.add(ttheta);
+		controlItem.add(tbetai);pControl.add(tbetai);
+		controlItem.add(tbetao);pControl.add(tbetao);
+		
+		String rTmp=Double.toString(((DiE)mac.eList.get(sNowIndex)).radius);
+		String lTmp=Double.toString(((DiE)mac.eList.get(sNowIndex)).length);
+		String nTmp=Double.toString(((DiE)mac.eList.get(sNowIndex)).n);
+		String rhoTmp=Double.toString(((DiE)mac.eList.get(sNowIndex)).rho);
+		String thetaTmp=Double.toString(((DiE)mac.eList.get(sNowIndex)).theta);
+		String betaiTmp=Double.toString(((DiE)mac.eList.get(sNowIndex)).betai);
+		String betaoTmp=Double.toString(((DiE)mac.eList.get(sNowIndex)).betao);
+		tR.setText(rTmp); tL.setText(lTmp); tn.setText(nTmp);
+		trho.setText(rhoTmp); ttheta.setText(thetaTmp); tbetai.setText(betaiTmp); tbetao.setText(betaoTmp);
+		
+		bSave.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				double dR=Double.valueOf(tR.getText()); double dL=Double.valueOf(tL.getText());
+				double dn=Double.valueOf(tn.getText()); double drho=Double.valueOf(trho.getText());
+				double dtheta=Double.valueOf(ttheta.getText()); double dbetai=Double.valueOf(tbetai.getText());
+				double dbetao=Double.valueOf(tbetao.getText());
+				((DiE)mac.eList.get(sNowIndex)).radius=dR;
+				((DiE)mac.eList.get(sNowIndex)).length=dL;
+				((DiE)mac.eList.get(sNowIndex)).n=dn;
+				((DiE)mac.eList.get(sNowIndex)).rho=drho;
+				((DiE)mac.eList.get(sNowIndex)).theta=dtheta;
+				((DiE)mac.eList.get(sNowIndex)).betai=dbetai;
+				((DiE)mac.eList.get(sNowIndex)).betao=dbetao;
+			}
+		});
+		
+		this.repaint();
+	}
+	
+	
+	
+	
+	public void quadControl(){
+		Icon iconTmp=new ImageIcon(getClass().getResource(PhyC.bImg[4]));
+		JButton bSave=new JButton("",iconTmp);
+		bSave.setBounds(5, 5, 32, 32);
+		JLabel lR=new JLabel("R(m)");
+		lR.setBounds(5,40,50,25);
+		JLabel lL=new JLabel("L(m)");
+		lL.setBounds(5,70,50,25);
+		JLabel lKx=new JLabel("kx(T/m)");
+		lKx.setBounds(5,100,50,25);
+		JLabel lKz=new JLabel("kz(T/m)");
+		lKz.setBounds(5,130,50,25);
+
+
+		JTextField tR=new JTextField();
+		tR.setBounds(60,40,300,25);
+
+    	JTextField tL=new JTextField();
+		tL.setBounds(60,70,300,25);
+
+		JTextField tKx=new JTextField();
+		tKx.setBounds(60,100,300,25);
+		
+		JTextField tKz=new JTextField();
+		tKz.setBounds(60,130,300,25);
+	
+		
+		controlItem.add(bSave); pControl.add(bSave);
+		controlItem.add(lR);pControl.add(lR);
+		controlItem.add(lL);pControl.add(lL);
+		controlItem.add(tR);pControl.add(tR);
+		controlItem.add(tL);pControl.add(tL);
+		controlItem.add(lKx);pControl.add(lKx);
+		controlItem.add(lKz);pControl.add(lKz);
+		controlItem.add(tKx);pControl.add(tKx);
+		controlItem.add(tKz);pControl.add(tKz);
+		
+		String rTmp=Double.toString(((QuadE)mac.eList.get(sNowIndex)).radius);
+		String lTmp=Double.toString(((QuadE)mac.eList.get(sNowIndex)).length);
+		String kxTmp=Double.toString(((QuadE)mac.eList.get(sNowIndex)).kx);
+		String kzTmp=Double.toString(((QuadE)mac.eList.get(sNowIndex)).kz);
+		tR.setText(rTmp);
+		tL.setText(lTmp);
+		tKx.setText(kxTmp);
+		tKz.setText(kzTmp);
+		
+		bSave.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				double dR=Double.valueOf(tR.getText());
+				double dL=Double.valueOf(tL.getText());
+				double dKx=Double.valueOf(tKx.getText());
+				double dKz=Double.valueOf(tKz.getText());
+				((QuadE)mac.eList.get(sNowIndex)).radius=dR;
+				((QuadE)mac.eList.get(sNowIndex)).length=dL;
+				((QuadE)mac.eList.get(sNowIndex)).kx=dKx;
+				((QuadE)mac.eList.get(sNowIndex)).kz=dKz;
+			}
+		});
+		
+		this.repaint();
+	}
 	////////////////////////////////////////////////////////
 	public static void main(String[] args) {
 		MainWindow mw=new MainWindow();
-		for(int i=0;i<5;i++){
-		    mw.mac.addQuadE(i, 10, 100, 1, 1);
-		}
-		mw.drawEButton();
-		mw.repaint();
 
 	}
 
