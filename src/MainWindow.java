@@ -11,6 +11,7 @@ public class MainWindow extends JFrame{
 	private JLabel label1;
 	private JButton bIonS, bDrift, bQuad, bDi;
 	private JButton bDetector;
+	private JButton bDel, bRun, bDrawReal;
 	private JPanel pLine, pControl;
 	private JScrollPane spLine, spControl;
 	
@@ -97,6 +98,10 @@ public class MainWindow extends JFrame{
 					mac.addDiE(sNowIndex, 0, 0, 0, 0, 0, 0, 0);
 					drawEButton();
 				}
+				else if(bTmp==bDel){
+					mac.eList.remove(sNowIndex);
+					drawEButton();
+				}
 				else{
 				}
 				
@@ -148,11 +153,33 @@ public class MainWindow extends JFrame{
 		bDetector=new JButton("");
 		bDetector.setBounds(210, 5, 48, 48);
 		
+    	iIonS=new ImageIcon(getClass().getResource(PhyC.bImg[0]));
+		bDel=new JButton("", iIonS);
+		bDel.setBounds(300, 20, 32, 32);
+		bDel.addActionListener(bListener);
+
+    	iIonS=new ImageIcon(getClass().getResource(PhyC.bImg[1]));
+		bDrawReal=new JButton("", iIonS);
+		bDrawReal.setBounds(334, 20, 32, 32);
+		bDrawReal.addActionListener(bListener);
+
+    	iIonS=new ImageIcon(getClass().getResource(PhyC.bImg[2]));
+		bRun=new JButton("", iIonS);
+		bRun.setBounds(368, 20, 32, 32);
+		bRun.addActionListener(bListener);
+
+
+
+
+
 		this.add(bIonS);
 		this.add(bDrift);
 		this.add(bQuad);
 		this.add(bDi);
 		this.add(bDetector);
+		this.add(bDel);
+		this.add(bDrawReal);
+		this.add(bRun);
 		//this.add(pLine);
 	}
 
@@ -184,6 +211,7 @@ public class MainWindow extends JFrame{
 		for(i=0;i<this.eleButton.size();i++){
 			this.pLine.remove(eleButton.get(i));
 		}
+		eleButton.clear();
 		
 	}
 	
