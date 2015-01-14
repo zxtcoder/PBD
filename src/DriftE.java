@@ -1,8 +1,12 @@
 
 public class DriftE extends Element{
 	
-	public DriftE(double r, double l){
-		super(r,l,1);
+	public DriftE(){
+		super(0,0,1);
+	}
+	
+	public void setPara(double r, double l){
+		radius=r; length=l;
 	}
 
 	void calParticle(Particle p, double dt){

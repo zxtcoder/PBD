@@ -12,7 +12,7 @@ public class MainWindow extends JFrame{
 	private JButton bIonS, bDrift, bQuad, bDi;
 	private JButton bDetector;
 	private JButton bDel, bRunControl, bDrawReal, bLog, bStartRun;
-	private JPanel pLine, pControl, toolBar, eleBar;
+	private JPanel pLine, pControl, toolBar, eleBar, statusBar;
 	private JScrollPane spLine, spControl;
 	
 	private JMenuBar mbar;
@@ -61,10 +61,12 @@ public class MainWindow extends JFrame{
 		
 		this.menuInit();
 		this.listenerInit();
-		this.buttonInit();
+		this.toolBarInit();
+		this.eleBarInit();
+		this.statusBarInit();
 
 		this.setTitle("Particle Beam Designer");
-		this.setSize(800, 600);
+		this.setSize(800, 650);
 		this.setLayout(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
@@ -112,6 +114,11 @@ public class MainWindow extends JFrame{
 				}
 				else if(bTmp==bStartRun){
 					mac.run();
+					JOptionPane.showMessageDialog(null, ""+mac.pList.size()+" atoms simulation is done!");
+					mac.clearParticle();
+				}
+				else if(bTmp==bDrawReal){
+					
 				}
 				else{}
 				
@@ -137,7 +144,7 @@ public class MainWindow extends JFrame{
 	}
 	
 	
-	public void buttonInit(){
+	public void eleBarInit(){
 		eleBar=new JPanel();
 		eleBar.setLayout(null);
 		eleBar.setBounds(10, 5, 770, 80);
@@ -167,14 +174,15 @@ public class MainWindow extends JFrame{
 		eleBar.add(bDrift);
 		eleBar.add(bQuad);
 		eleBar.add(bDi);
+	}
 
-	////////////////////////////////////////////////	
 		
+	public void toolBarInit(){
 		toolBar=new JPanel();
 		toolBar.setLayout(null);
 		toolBar.setBounds(10, 215, 770, 40);
 
-    	iIonS=new ImageIcon(getClass().getResource(PhyC.bImg[0]));
+    	Icon iIonS=new ImageIcon(getClass().getResource(PhyC.bImg[0]));
 		bDel=new JButton("", iIonS);
 		bDel.setBounds(0, 0, 32, 32);
 		bDel.addActionListener(bListener);
@@ -210,6 +218,11 @@ public class MainWindow extends JFrame{
 		//this.add(pLine);
 	}
 
+	public void statusBarInit(){
+		statusBar=new JPanel();
+		statusBar.setLayout(null);
+		statusBar.setBounds(10, 600, 770, 40);
+	}
 	
 	public void drawEButton(){
 		int i=0,name=-1;
@@ -315,7 +328,6 @@ public class MainWindow extends JFrame{
 	}
 	
 	
-	
 	public void driftControl(){
 		Icon iconTmp=new ImageIcon(getClass().getResource(PhyC.bImg[4]));
 		JButton bSave=new JButton("",iconTmp);
@@ -347,8 +359,7 @@ public class MainWindow extends JFrame{
 			public void actionPerformed(ActionEvent e){
 				double dR=Double.valueOf(tR.getText());
 				double dL=Double.valueOf(tL.getText());
-				((DriftE)mac.eList.get(sNowIndex)).radius=dR;
-				((DriftE)mac.eList.get(sNowIndex)).length=dL;
+				((DriftE)mac.eList.get(sNowIndex)).setPara(dR, dL);
 				mac.calLength();
 			}
 		});
@@ -438,13 +449,8 @@ public class MainWindow extends JFrame{
 				double dxA=Double.valueOf(txA.getText()); double dxpA=Double.valueOf(txpA.getText());
 				double dzA=Double.valueOf(tzA.getText()); double dzpA=Double.valueOf(tzpA.getText());
 				double dsA=Double.valueOf(tsA.getText()); double dspA=Double.valueOf(tspA.getText());
-				((IonSE)mac.eList.get(sNowIndex)).radius=dR; ((IonSE)mac.eList.get(sNowIndex)).length=dL;
-				((IonSE)mac.eList.get(sNowIndex)).position=dp; ((IonSE)mac.eList.get(sNowIndex)).durT=ddurT;
-				((IonSE)mac.eList.get(sNowIndex)).beamInt=dbeamInt; ((IonSE)mac.eList.get(sNowIndex)).pMass=dmass;
-				((IonSE)mac.eList.get(sNowIndex)).pCharge=dcharge; ((IonSE)mac.eList.get(sNowIndex)).pEnergy=denergy;
-				((IonSE)mac.eList.get(sNowIndex)).xA=dxA; ((IonSE)mac.eList.get(sNowIndex)).xpA=dxpA;
-				((IonSE)mac.eList.get(sNowIndex)).zA=dzA; ((IonSE)mac.eList.get(sNowIndex)).zpA=dzpA;
-				((IonSE)mac.eList.get(sNowIndex)).sA=dsA; ((IonSE)mac.eList.get(sNowIndex)).spA=dspA;
+				((IonSE)mac.eList.get(sNowIndex)).setPara2(mac.pList, dR, dL, dp, ddurT, dbeamInt, 
+						dmass, dcharge, denergy, dxA, dxpA, dzA, dzpA, dsA, dspA);
 				mac.calLength();
 			}
 		});
@@ -506,20 +512,13 @@ public class MainWindow extends JFrame{
 				double dn=Double.valueOf(tn.getText()); double drho=Double.valueOf(trho.getText());
 				double dtheta=Double.valueOf(ttheta.getText()); double dbetai=Double.valueOf(tbetai.getText());
 				double dbetao=Double.valueOf(tbetao.getText());
-				((DiE)mac.eList.get(sNowIndex)).radius=dR;
-				((DiE)mac.eList.get(sNowIndex)).length=dL;
-				((DiE)mac.eList.get(sNowIndex)).n=dn;
-				((DiE)mac.eList.get(sNowIndex)).rho=drho;
-				((DiE)mac.eList.get(sNowIndex)).theta=dtheta;
-				((DiE)mac.eList.get(sNowIndex)).betai=dbetai;
-				((DiE)mac.eList.get(sNowIndex)).betao=dbetao;
+				((DiE)mac.eList.get(sNowIndex)).setPara(dR, dL, dn, drho, dtheta, dbetai, dbetao);
 				mac.calLength();
 			}
 		});
 		
 		this.repaint();
 	}
-	
 	
 	public void quadControl(){
 		Icon iconTmp=new ImageIcon(getClass().getResource(PhyC.bImg[4]));
@@ -573,10 +572,7 @@ public class MainWindow extends JFrame{
 				double dL=Double.valueOf(tL.getText());
 				double dKx=Double.valueOf(tKx.getText());
 				double dKz=Double.valueOf(tKz.getText());
-				((QuadE)mac.eList.get(sNowIndex)).radius=dR;
-				((QuadE)mac.eList.get(sNowIndex)).length=dL;
-				((QuadE)mac.eList.get(sNowIndex)).kx=dKx;
-				((QuadE)mac.eList.get(sNowIndex)).kz=dKz;
+				((QuadE)mac.eList.get(sNowIndex)).setPara(dR, dL, dKx, dKz);
 				mac.calLength();
 			}
 		});

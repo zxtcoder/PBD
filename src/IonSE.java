@@ -15,27 +15,32 @@ public class IonSE extends Element{
 	
 	private ArrayList<Particle> pList;
 	
-	public IonSE(ArrayList<Particle> pl, double r, double l, double p, double durTT, double beamIntt, double pMasss, double pChargee, double pEnergyy){
-		super(r,l,0);
-		durT=durTT; beamInt=beamIntt;
-		pMass=pMasss; pCharge=pChargee; pEnergy=pEnergyy;
+	public IonSE(){
+		super(0,0,0);
+		durT=beamInt=pMass=pCharge=pEnergy=vs0=rT=position=0;
 		ionSType=0;
-		pList=pl;
-		rT=0;
-		position=p;
-		xA=xpA=zA=zpA=spA=0;
-		vs0=Math.sqrt(2*pEnergy*PhyC.eV/pMass/PhyC.u);
+		xA=xpA=zA=zpA=sA=spA=0;
+		pList=null;
 	}
 	
 	public void setISType1(){
 		ionSType=1;
 	}
 	
-	public void setISType2(double xAA, double xpAA, double zAA, double zpAA, double sAA, double spAA){
+	public void setPara2(ArrayList<Particle> pL, double r, double l, double p, double durTT, double beamIntt, double pMasss, double pChargee, double pEnergyy,
+			double xAA, double xpAA, double zAA, double zpAA, double sAA, double spAA){
+		pList=pL;
 		ionSType=2;
+		radius=r; length=l;
 		xA=xAA; xpA=xpAA; 
 		zA=zAA; zpA=zpAA; 
 		sA=sAA; spA=spAA;
+		durT=durTT; beamInt=beamIntt;
+		pMass=pMasss; pCharge=pChargee; pEnergy=pEnergyy;
+		ionSType=2;
+		rT=0;
+		position=p;
+		vs0=Math.sqrt(2*pEnergy*PhyC.eV/pMass/PhyC.u);
 	}
 	
 	public void CalParticle(double dt){
@@ -72,12 +77,11 @@ public class IonSE extends Element{
 ////////////////////////////////////////////////////////////
 	public static void main(String[] args) {
 		ArrayList<Particle> pl=new ArrayList<Particle>();
-		IonSE ise=new IonSE(pl, 10, 10, 9, 100, 100, 1, 1, 1);
-		ise.setISType2(1,0.2,1,0.2,1,0.2);
-		ise.CalParticle(1000);
-		int num=pl.size();
+		IonSE ise=new IonSE();
+		ise.setPara2(pl, 10, 100, 2, 1, 100, 1, 1, 0.0001, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1);
+		ise.CalParticle(0.1);
 		int i;
-		for(i=0;i<num;i++){
+		for(i=0;i<pl.size();i++){
 			System.out.printf("%f %f\n", pl.get(i).s, pl.get(i).vs);
 			
 		}

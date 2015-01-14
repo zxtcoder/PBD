@@ -4,8 +4,13 @@ public class QuadE extends Element{
 	
 	public double kx, kz;//grad of the magnet
 	
-	public QuadE(double r, double l, double kxx, double kzz){
-		super(r,l,2);
+	public QuadE(){
+		super(0,0,2);
+		kx=0; kz=0;
+	}
+	
+	public void setPara(double r, double l, double kxx, double kzz){
+		radius=r; length=l;
 		kx=kxx; kz=kzz;
 	}
 
@@ -72,7 +77,8 @@ public class QuadE extends Element{
 ////////////////////////////////////////////////////
 	public static void main(String[] args) {
 		Particle np=new Particle(1,1,1,2,3,2,3,1);
-		QuadE nqe=new QuadE(10,10,1e-12,1e-12);
+		QuadE nqe=new QuadE();
+		nqe.setPara(10,10,1e-12,1e-12);
 		nqe.calParticle(np, 1);
 		System.out.printf("%f %f %f %f %f %f\n", np.x, np.z, np.s, np.xp, np.zp, np.vs);
 		

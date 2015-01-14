@@ -21,24 +21,31 @@ public class Machine {
 
 	}
 	
+	public void clearParticle(){
+		pList.clear();
+	}
+	
 	public void setdt(double dtt){
 		dt=dtt;
 	}
 	
 	public void addDriftE(int index, double r, double l){
-	    DriftE nde=new DriftE(r,l);
+	    DriftE nde=new DriftE();
+	    nde.setPara(r, l);
 	    eList.add(index,nde);
 	    sumLength=sumLength + nde.length;
 	}
 	
 	public void addQuadE(int index, double r, double l, double kx, double kz){
-		QuadE nqe=new QuadE(r,l,kx,kz);
+		QuadE nqe=new QuadE();
+		nqe.setPara(r, l, kx, kz);
 		eList.add(index,nqe);
 		sumLength=sumLength + nqe.length;
 	}
 	
 	public void addDiE(int index, double r, double l, double n, double rho, double theta, double betai, double betao){
-	    DiE ndie=new DiE(r,l,n,rho,theta,betai,betao);
+	    DiE ndie=new DiE();
+	    ndie.setPara(r, l, n, rho, theta, betai, betao);
 	    eList.add(index, ndie);
 	    sumLength=sumLength + ndie.length;
 	}
@@ -46,10 +53,11 @@ public class Machine {
 	public void addIonSEType2(int index, ArrayList<Particle> pl, double r, double l, double p, 
 	    double durT, double beamInt, double pMass, double pCharge, double pEnergy,
 	    double xA, double xpA, double zA, double zpA, double sA, double spA){
-		IonSE nise=new IonSE(pl,r,l,p,durT,beamInt,pMass,pCharge,pEnergy);
-		nise.setISType2(xA, xpA, zA, zpA, sA, spA);
+		IonSE nise=new IonSE();
+		nise.setPara2(pl, r, l, p, durT, beamInt, pMass, pCharge, pEnergy, xA, xpA, zA, zpA, sA, spA);
 		eList.add(index, nise);
 	    sumLength=sumLength + nise.length;
+
 	}
 	
 	public void calLength(){
@@ -86,7 +94,7 @@ public class Machine {
 			    fW.close();
 			
 		    }
-		    else if(nowStep%logStep==0){
+		    if(nowStep%logStep==0){
 		    	int i=0;
 		    	File logF=new File(this.logName + "/Step" + nowStep + ".txt");
 		    	FileWriter fW=new FileWriter(logF);
@@ -182,11 +190,15 @@ public class Machine {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Machine nm=new Machine();
-		nm.addIonSEType2(nm.eList.size(),nm.pList, 100, 0, 2, 0.1, 10000, 1, 1, 0.00001, 0.1, 0.01, 0.5, 0.01, 1, 0.1);
-		nm.addDriftE(nm.eList.size(),100, 100000);
+		//nm.addIonSEType2(nm.eList.size(),nm.pList, 100, 0, 2, 0.1, 10000, 1, 1, 0.00001, 0.1, 0.01, 0.5, 0.01, 1, 0.1);
+//		nm.addIonSEType2(nm.eList.size(),nm.pList, 10, 100, 2, 1, 100, 1, 1, 0.00001, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1);
+		nm.addIonSEType2(nm.eList.size(),nm.pList, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+		((IonSE)nm.eList.get(0)).setPara2(nm.pList, 10, 100, 2, 1, 100, 1, 1, 0.0001, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1);
+
+		//nm.addDriftE(nm.eList.size(),10, 100);
 		//nm.addQuadE(100, 1000, 1e-10, 1e-10);
 		//nm.addQuadE(100, 1000, -1e-10, -1e-10);
-		nm.setRunPara(0.01, 1, 1, "test1");
+		nm.setRunPara(0.1, 1, 1, "test3");
 		nm.run();
 		nm.outInfo();
 

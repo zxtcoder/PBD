@@ -4,8 +4,14 @@ public class DiE extends Element{
 	public double n, rho, theta;
 	public double betai, betao;
 	
-	public DiE(double r, double l, double nn, double rhoo, double thetaa, double betaii, double betaoo){
-		super(r,l,3);
+	public DiE(){
+		super(0,0,3);
+		n=0; rho=0; theta=0;
+		betai=0; betao=0;
+	}
+	
+	public void setPara(double r, double l, double nn, double rhoo, double thetaa, double betaii, double betaoo){
+		radius=r; length=l;
 		n=nn; rho=rhoo; theta=thetaa;
 		betai=betaii; betao=betaoo;
 	}
@@ -80,7 +86,8 @@ public class DiE extends Element{
 		// TODO Auto-generated method stub
 		Particle np=new Particle(1,1,1,2,3,2,3,1);
 		double pi=3.14159265358;
-		DiE ndie=new DiE(1,14.137,0.5,9,pi/2,0,0);
+		DiE ndie=new DiE();
+		ndie.setPara(1,14.137,0.5,9,pi/2,0,0);
 		ndie.calParticle(np, 1, 0);
 		System.out.printf("%f %f %f %f %f %f\n", np.x, np.z, np.s, np.xp, np.zp, np.vs);
 	}
