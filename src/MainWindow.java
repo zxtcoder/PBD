@@ -11,7 +11,7 @@ public class MainWindow extends JFrame{
 	private JLabel label1;
 	private JButton bIonS, bDrift, bQuad, bDi;
 	private JButton bDetector;
-	private JButton bDel, bRunControl, bDrawReal, bLog;
+	private JButton bDel, bRunControl, bDrawReal, bLog, bStartRun;
 	private JPanel pLine, pControl, toolBar, eleBar;
 	private JScrollPane spLine, spControl;
 	
@@ -110,6 +110,9 @@ public class MainWindow extends JFrame{
 				else if(bTmp==bRunControl){
 					drawControlPane("runcontrol");
 				}
+				else if(bTmp==bStartRun){
+					mac.run();
+				}
 				else{}
 				
 			}
@@ -191,11 +194,19 @@ public class MainWindow extends JFrame{
 		bLog.setBounds(102, 0, 32, 32);
 		bLog.addActionListener(bListener);
 
+    	iIonS=new ImageIcon(getClass().getResource(PhyC.bImg[5]));
+		bStartRun=new JButton("", iIonS);
+		bStartRun.setBounds(730, 0, 32, 32);
+		bStartRun.setBackground(Color.RED);
+		bStartRun.addActionListener(bListener);
+
+
 		this.add(toolBar);
 		toolBar.add(bDel);
 		toolBar.add(bDrawReal);
 		toolBar.add(bRunControl);
 		toolBar.add(bLog);
+		toolBar.add(bStartRun);
 		//this.add(pLine);
 	}
 
@@ -338,6 +349,7 @@ public class MainWindow extends JFrame{
 				double dL=Double.valueOf(tL.getText());
 				((DriftE)mac.eList.get(sNowIndex)).radius=dR;
 				((DriftE)mac.eList.get(sNowIndex)).length=dL;
+				mac.calLength();
 			}
 		});
 		
@@ -433,6 +445,7 @@ public class MainWindow extends JFrame{
 				((IonSE)mac.eList.get(sNowIndex)).xA=dxA; ((IonSE)mac.eList.get(sNowIndex)).xpA=dxpA;
 				((IonSE)mac.eList.get(sNowIndex)).zA=dzA; ((IonSE)mac.eList.get(sNowIndex)).zpA=dzpA;
 				((IonSE)mac.eList.get(sNowIndex)).sA=dsA; ((IonSE)mac.eList.get(sNowIndex)).spA=dspA;
+				mac.calLength();
 			}
 		});
 		
@@ -500,6 +513,7 @@ public class MainWindow extends JFrame{
 				((DiE)mac.eList.get(sNowIndex)).theta=dtheta;
 				((DiE)mac.eList.get(sNowIndex)).betai=dbetai;
 				((DiE)mac.eList.get(sNowIndex)).betao=dbetao;
+				mac.calLength();
 			}
 		});
 		
@@ -563,6 +577,7 @@ public class MainWindow extends JFrame{
 				((QuadE)mac.eList.get(sNowIndex)).length=dL;
 				((QuadE)mac.eList.get(sNowIndex)).kx=dKx;
 				((QuadE)mac.eList.get(sNowIndex)).kz=dKz;
+				mac.calLength();
 			}
 		});
 		

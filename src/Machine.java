@@ -52,6 +52,15 @@ public class Machine {
 	    sumLength=sumLength + nise.length;
 	}
 	
+	public void calLength(){
+		int i=0;
+		sumLength=0;
+		for(i=0;i<eList.size();i++){
+			sumLength+=eList.get(i).length;
+		}
+		
+	}
+	
 	public void outInfo(){
 		int pNum=0, i=0;
 		pNum=pList.size();
@@ -94,16 +103,20 @@ public class Machine {
 		}catch(Exception e){}
 
 	}
-	
-	public void run(double tStep, double sTime, int logStepp, String logNamee){
+	public void setRunPara(double tStep, double sTime, int logStepp, String logNamee){
 		dt=tStep;
 		sumTime=sTime;
 		logStep=logStepp; logName=logNamee;
+		this.calLength();
+	}	
+
+	public void run(){
 		int i=0, j=0;
 		double pNum=0, eNum=0, tmpL1=0, tmpL2=0;
 		double outNum=0;
 		eNum=eList.size();
 		nowTime=0; nowStep=0;
+		this.calLength();
 		while(nowTime<sumTime){
 			this.outLog();
 			pNum=pList.size();
@@ -173,7 +186,10 @@ public class Machine {
 		nm.addDriftE(nm.eList.size(),100, 100000);
 		//nm.addQuadE(100, 1000, 1e-10, 1e-10);
 		//nm.addQuadE(100, 1000, -1e-10, -1e-10);
-		nm.run(0.01, 1, 1, "test1");
+		nm.setRunPara(0.01, 1, 1, "test1");
+		nm.run();
+		nm.outInfo();
+
 	}
 
 }
