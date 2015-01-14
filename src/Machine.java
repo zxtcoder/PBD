@@ -91,6 +91,10 @@ public class Machine {
 			    fW.write("Length " + this.sumLength + "\n");
 			    fW.write("Time " + this.sumTime + "\n");
 			    fW.write("dt " + this.dt + "\n");
+			    fW.write("Elements Length\n");
+			    for(Element eTmp: this.eList){
+			    	fW.write("" + eTmp.length + "\n");
+			    }
 			    fW.close();
 			
 		    }
@@ -101,7 +105,8 @@ public class Machine {
 		    	fW.write("flag m charge x z s xp zp vx vz vs\n");
 		    	for(i=0;i<this.pList.size();i++){
 		    		Particle pT=pList.get(i);
-		    		fW.write("" + pT.flag + " " + pT.mass + " " + pT.charge + " " + pT.x + " " + pT.z + " " + pT.xp + " " + pT.zp + 
+		    		fW.write("" + pT.flag + " " + pT.mass + " " + pT.charge + " " + 
+		    		         pT.x + " " + pT.z + " " + pT.s + " " + pT.xp + " " + pT.zp + 
 		    				" " + pT.vx + " " + pT.vz + " " + pT.vs + "\n");
 		    	}
 

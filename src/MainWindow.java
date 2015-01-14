@@ -11,7 +11,7 @@ public class MainWindow extends JFrame{
 	private JLabel label1;
 	private JButton bIonS, bDrift, bQuad, bDi;
 	private JButton bDetector;
-	private JButton bDel, bRunControl, bDrawReal, bLog, bStartRun;
+	private JButton bDel, bRunControl, bDrawReal, bPlot, bStartRun;
 	private JPanel pLine, pControl, toolBar, eleBar, statusBar;
 	private JScrollPane spLine, spControl;
 	
@@ -198,9 +198,9 @@ public class MainWindow extends JFrame{
 		bRunControl.addActionListener(bListener);
 
     	iIonS=new ImageIcon(getClass().getResource(PhyC.bImg[3]));
-		bLog=new JButton("", iIonS);
-		bLog.setBounds(102, 0, 32, 32);
-		bLog.addActionListener(bListener);
+		bPlot=new JButton("", iIonS);
+		bPlot.setBounds(102, 0, 32, 32);
+		bPlot.addActionListener(bListener);
 
     	iIonS=new ImageIcon(getClass().getResource(PhyC.bImg[5]));
 		bStartRun=new JButton("", iIonS);
@@ -213,7 +213,7 @@ public class MainWindow extends JFrame{
 		toolBar.add(bDel);
 		toolBar.add(bDrawReal);
 		toolBar.add(bRunControl);
-		toolBar.add(bLog);
+		toolBar.add(bPlot);
 		toolBar.add(bStartRun);
 		//this.add(pLine);
 	}
