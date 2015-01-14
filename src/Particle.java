@@ -5,7 +5,7 @@ public class Particle {
 	public double x, z, s;
 	public double xp, zp;//xp=dx/ds=vx/vs, zp=dz/ds=vz/vs
 	public double vx, vz, vs;
-	public int flag;
+	public int flag;//0 normal; 1:lose; 2:end
 	
 	public Particle(double m, double q, double xx, double zz, double ss, double vxx, double vzz, double vss){
 		mass=m; charge=q; 

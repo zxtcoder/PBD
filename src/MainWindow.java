@@ -269,15 +269,15 @@ public class MainWindow extends JFrame{
 	public void runControl(){
 		Icon iconTmp=new ImageIcon(getClass().getResource(PhyC.bImg[4]));
 		JButton bSave=new JButton("",iconTmp); bSave.setBounds(5, 5, 32, 32);
-		JLabel lRunTime=new JLabel("T(s)"); lRunTime.setBounds(5,40,50,25);
-		JLabel ldt=new JLabel("dt(s)"); ldt.setBounds(5,70,50,25);
-		JLabel lLogStep=new JLabel("LStep"); lLogStep.setBounds(5,100,50,25);
-		JLabel lLogName=new JLabel("LName"); lLogName.setBounds(5,130,50,25);
+		JLabel lRunTime=new JLabel("T(s)"); lRunTime.setBounds(5,40,100,25);
+		JLabel ldt=new JLabel("dt(s)"); ldt.setBounds(5,70,100,25);
+		JLabel lLogStep=new JLabel("LogStep"); lLogStep.setBounds(5,100,100,25);
+		JLabel lLogName=new JLabel("LogName"); lLogName.setBounds(5,130,100,25);
 
-		JTextField tRunTime=new JTextField(); tRunTime.setBounds(60,40,300,25);
-    	JTextField tdt=new JTextField(); tdt.setBounds(60,70,300,25);
-    	JTextField tLogStep=new JTextField(); tLogStep.setBounds(60,100,300,25);
-    	JTextField tLogName=new JTextField(); tLogName.setBounds(60,130,300,25);
+		JTextField tRunTime=new JTextField(); tRunTime.setBounds(110,40,300,25);
+    	JTextField tdt=new JTextField(); tdt.setBounds(110,70,300,25);
+    	JTextField tLogStep=new JTextField(); tLogStep.setBounds(110,100,300,25);
+    	JTextField tLogName=new JTextField(); tLogName.setBounds(110,130,300,25);
 		
 		
 		controlItem.add(bSave); pControl.add(bSave);
@@ -288,11 +288,15 @@ public class MainWindow extends JFrame{
 		
 		tRunTime.setText(Double.toString(mac.sumTime));
 		tdt.setText(Double.toString(mac.dt));
+		tLogStep.setText(Integer.toString(mac.logStep));
+		tLogName.setText(mac.logName);
 		
 		bSave.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				mac.sumTime=Double.valueOf(tRunTime.getText());
 				mac.dt=Double.valueOf(tdt.getText());
+				mac.logStep=Integer.valueOf(tLogStep.getText());
+				mac.logName=tLogName.getText();
 			}
 		});
 		

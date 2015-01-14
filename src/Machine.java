@@ -1,4 +1,6 @@
+import java.io.File;
 import java.util.*;
+import java.io.*;
 
 public class Machine {
 	public ArrayList<Element> eList;
@@ -6,13 +8,16 @@ public class Machine {
 
 	public double sumTime, sumLength;
 	public double dt, nowTime;
-
+	public int nowStep, logStep;
+	public String logName;
 	
 	public Machine(){
 		eList=new ArrayList<Element>();
 		pList=new ArrayList<Particle>();
 		sumTime=sumLength=0;
 		dt=nowTime=0;
+		nowStep=logStep=0;
+		logName="";
 
 	}
 	
@@ -56,16 +61,54 @@ public class Machine {
 		}
 	}
 	
-	public void run(double tStep, double sTime){
+	public void outLog(){
+		try{
+		    if(nowStep==0){
+			    File logDir=new File(this.logName);
+			    if(!logDir.exists()){
+				    logDir.mkdirs();
+			    }
+			    File infoFile=new File(this.logName+"/info.txt");
+			    FileWriter fW=new FileWriter(infoFile);
+			    fW.write("Name " + this.logName + "\n");
+			    fW.write("Length " + this.sumLength + "\n");
+			    fW.write("Time " + this.sumTime + "\n");
+			    fW.write("dt " + this.dt + "\n");
+			    fW.close();
+			
+		    }
+		    else if(nowStep%logStep==0){
+		    	int i=0;
+		    	File logF=new File(this.logName + "/Step" + nowStep + ".txt");
+		    	FileWriter fW=new FileWriter(logF);
+		    	fW.write("flag m charge x z s xp zp vx vz vs\n");
+		    	for(i=0;i<this.pList.size();i++){
+		    		Particle pT=pList.get(i);
+		    		fW.write("" + pT.flag + " " + pT.mass + " " + pT.charge + " " + pT.x + " " + pT.z + " " + pT.xp + " " + pT.zp + 
+		    				" " + pT.vx + " " + pT.vz + " " + pT.vs + "\n");
+		    	}
+
+		    	fW.close();
+
+		    }
+		}catch(Exception e){}
+
+	}
+	
+	public void run(double tStep, double sTime, int logStepp, String logNamee){
 		dt=tStep;
 		sumTime=sTime;
+		logStep=logStepp; logName=logNamee;
 		int i=0, j=0;
 		double pNum=0, eNum=0, tmpL1=0, tmpL2=0;
 		double outNum=0;
 		eNum=eList.size();
+		nowTime=0; nowStep=0;
 		while(nowTime<sumTime){
+			this.outLog();
 			pNum=pList.size();
     		nowTime=nowTime + dt;
+    		nowStep++;
 
     		for(j=0;j<eNum;j++){
     			if(eList.get(j).name==0){
@@ -126,13 +169,11 @@ public class Machine {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Machine nm=new Machine();
-		nm.addIonSEType2(nm.eList.size(),nm.pList, 100, 0, 2, 0.1, 10000000, 1, 1, 0.00001, 0.1, 0.01, 0.5, 0.01, 1, 0.1);
+		nm.addIonSEType2(nm.eList.size(),nm.pList, 100, 0, 2, 0.1, 10000, 1, 1, 0.00001, 0.1, 0.01, 0.5, 0.01, 1, 0.1);
 		nm.addDriftE(nm.eList.size(),100, 100000);
 		//nm.addQuadE(100, 1000, 1e-10, 1e-10);
 		//nm.addQuadE(100, 1000, -1e-10, -1e-10);
-		nm.run(0.01, 1);
-		nm.outInfo();
-
+		nm.run(0.01, 1, 1, "test1");
 	}
 
 }
