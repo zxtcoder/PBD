@@ -1,6 +1,7 @@
 Name test1
-Length 10.0
+Length 200.0
 Time 1.0
 dt 0.1
-Elements Length
-10.0
+Name 0 1
+Length 100.0 100.0
+Radius 10.0 29.0

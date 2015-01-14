@@ -88,19 +88,27 @@ public class Machine {
 			    File infoFile=new File(this.logName+"/info.txt");
 			    FileWriter fW=new FileWriter(infoFile);
 			    fW.write("Name " + this.logName + "\n");
-			    fW.write("Length " + this.sumLength + "\n");
+			    fW.write("SumLength " + this.sumLength + "\n");
 			    fW.write("Time " + this.sumTime + "\n");
 			    fW.write("dt " + this.dt + "\n");
-			    fW.write("Elements Length\n");
+                fW.write("Name");
 			    for(Element eTmp: this.eList){
-			    	fW.write("" + eTmp.length + "\n");
+			    	fW.write(" " + eTmp.name);
+			    }
+			    fW.write("\nLength");
+			    for(Element eTmp: this.eList){
+			    	fW.write(" " + eTmp.length);
+			    }
+			    fW.write("\nRadius");
+			    for(Element eTmp: this.eList){
+			    	fW.write(" " + eTmp.radius);
 			    }
 			    fW.close();
-			
 		    }
 		    if(nowStep%logStep==0){
 		    	int i=0;
-		    	File logF=new File(this.logName + "/Step" + nowStep + ".txt");
+		    	String stepStr=String.format("%010d", nowStep);
+		    	File logF=new File(this.logName + "/Step" + stepStr + ".txt");
 		    	FileWriter fW=new FileWriter(logF);
 		    	fW.write("flag m charge x z s xp zp vx vz vs\n");
 		    	for(i=0;i<this.pList.size();i++){

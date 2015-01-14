@@ -6,29 +6,61 @@ import java.util.*;
 import java.io.*;
 
 class PlotPanel extends JPanel{
-	String dataPath, plotFName;
-	int plotType;
-	ArrayList<Particle> pData1;
-	ArrayList<Double> lInfo;
+	public String dataPath, plotFName;
+	public int plotType;
+
+	public ArrayList<String> fNameList;
+	
+	double sumLength;
+	public ArrayList<Double> lenList, radList;
+	public ArrayList<Integer> eNameList;
 
 	public PlotPanel(String dPath){
 		dataPath=dPath;
 		plotType=0;
-		lInfo=new ArrayList<Double>();
 		plotFName="";
+
+		this.getFileList();
+		this.readInfo();
 	}
 	
-	public void readLInfo(){
+	public void getFileList(){
+		fNameList=new ArrayList<String>();
+		File file=new File(dataPath);
+		File[] fList=file.listFiles();
+		for(File fTmp : fList){
+			if(fTmp.isFile()){
+				String name=fTmp.getName();
+				if(name.charAt(0)=='S')
+				    fNameList.add(name);
+			}
+		}
+		fNameList.sort(null);
+
+	}
+	
+	public void readInfo(){
 		int i=0;
-		String tmpLine;
+		String tmpLine; String[] itemTmp;
 		try{
 			File fInfo=new File(dataPath + "/info.txt");
 			BufferedReader in=new BufferedReader(new FileReader(fInfo));
-			for(i=0;i<5;i++) in.readLine();
-			while((tmpLine=in.readLine())!=null){
-				lInfo.add(Double.valueOf(tmpLine));
+			for(i=0;i<4;i++) in.readLine();
+
+			itemTmp=(in.readLine()).split(" ");
+			for(i=1;i<itemTmp.length;i++) eNameList.add(Integer.valueOf(itemTmp[i]));
+
+			itemTmp=(in.readLine()).split(" ");
+			sumLength=0;
+			for(i=1;i<itemTmp.length;i++){
+				lenList.add(Double.valueOf(itemTmp[i]));
+				sumLength+=Double.valueOf(itemTmp[i]);
 			}
+
+			itemTmp=(in.readLine()).split(" ");
+			for(i=1;i<itemTmp.length;i++) radList.add(Double.valueOf(itemTmp[i]));
 			in.close();
+
 		}catch(Exception e){}
 	}
 	
@@ -52,7 +84,6 @@ class PlotPanel extends JPanel{
 		}catch(Exception e){}
 		
 	}
-	
 	
 	
 	public void paintComponent(Graphics g){
@@ -85,6 +116,10 @@ class PlotPanel extends JPanel{
 			if(yData.get(i)>yMax)yMax=yData.get(i);
 			if(yData.get(i)<yMin)yMin=yData.get(i);
 		}
+		xMax=xMax + (xMax-xMin)*0.1;
+		xMin=xMin - (xMax-xMin)*0.1;
+		yMax=yMax + (yMax-yMin)*0.1;
+		yMin=yMin - (yMax-yMin)*0.1;
 		cCW=(int)panelW/(xMax-xMin); cCH=(int)panelH/(yMax-yMin);
 
 		g.drawLine(0, panelH , panelW, panelH);
@@ -104,18 +139,53 @@ class PlotPanel extends JPanel{
 
 	}
 	
-	public void plotXTrace(Graphics g){
+	public void plotTrace(Graphics g){
+		ArrayList<Particle> pData0=new ArrayList<Particle>();
+		ArrayList<Particle> pData1=new ArrayList<Particle>();
+
+		ArrayList<Double> xData0=new ArrayList<Double>(), yData0=new ArrayList<Double>();
+		ArrayList<Double> xData1=new ArrayList<Double>(), yData1=new ArrayList<Double>();
+
+		int i=0,j=0;
+		double xMax=PhyC.MIN, yMax=PhyC.MIN, xMin=PhyC.MAX, yMin=PhyC.MAX;
+		double cCW=0, cCH=0;
+		int panelW=this.getWidth(), panelH=this.getHeight()-50;
+		String xStr="", yStr=""; 
+		
+		this.readPData(dataPath + "/" + fNameList.get(0), pData0);
+		for(i=1;i<fNameList.size();i++){
+            this.readPData(dataPath + "/" + fNameList.get(i), pData1);
+            if(plotType==4){
+            	for(j=0;j<pData0.size();j++){
+            		xData0.add(pData0.get(j).s); yData0.add(pData0.get(j).x);
+            		xData1.add(pData1.get(j).s); yData1.add(pData1.get(j).x);
+            	}
+            }
+            if(plotType==5){
+             	for(j=0;j<pData0.size();j++){
+            		xData0.add(pData0.get(j).s); yData0.add(pData0.get(j).z);
+            		xData1.add(pData1.get(j).s); yData1.add(pData1.get(j).z);
+            	}
+            }
+            for(j=0;j<xData0.size();j++){
+            }
+            pData0=pData1;
+		}
+
+		
+		
+
 	}
 	
-	public void plotZTrace(Graphics g){
-	}
 }
 
 public class PlotWindow extends JFrame{
 	private PlotPanel pPanel;
 	private JPanel toolBar;
 
+
 	public PlotWindow(String path){
+
 		pPanel=new PlotPanel(path);
 		pPanel.setBackground(Color.WHITE);
 		pPanel.setBorder(new LineBorder(Color.BLACK));
@@ -148,7 +218,7 @@ public class PlotWindow extends JFrame{
 	public static void main(String[] args) {
 		String path="/home/zxt/workspace/PBD/test1";
 		PlotWindow npw=new PlotWindow(path);
-		npw.pPanel.plotFName=path + "/Step9.txt";
+		npw.pPanel.plotFName=path + "/Step0000000009.txt";
 		npw.pPanel.plotType=1;
 		npw.repaint();
 	}
