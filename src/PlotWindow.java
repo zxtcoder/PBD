@@ -19,6 +19,9 @@ class PlotPanel extends JPanel{
 		dataPath=dPath;
 		plotType=0;
 		plotFName="";
+		eNameList=new ArrayList<Integer>();
+		lenList=new ArrayList<Double>();
+		radList=new ArrayList<Double>();
 
 		this.getFileList();
 		this.readInfo();
@@ -48,7 +51,9 @@ class PlotPanel extends JPanel{
 			for(i=0;i<4;i++) in.readLine();
 
 			itemTmp=(in.readLine()).split(" ");
-			for(i=1;i<itemTmp.length;i++) eNameList.add(Integer.valueOf(itemTmp[i]));
+			for(i=1;i<itemTmp.length;i++){
+				eNameList.add(Integer.valueOf(itemTmp[i]));
+			}
 
 			itemTmp=(in.readLine()).split(" ");
 			sumLength=0;
@@ -88,7 +93,13 @@ class PlotPanel extends JPanel{
 	
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
-		plotPhase(g);
+		switch(plotType){
+		case 1:
+		case 2:
+		case 3: plotPhase(g);break;
+		case 4:
+		case 5: plotTrace(g);break;
+		}
 	}
 	
 	public void plotPhase(Graphics g){
@@ -145,12 +156,29 @@ class PlotPanel extends JPanel{
 
 		ArrayList<Double> xData0=new ArrayList<Double>(), yData0=new ArrayList<Double>();
 		ArrayList<Double> xData1=new ArrayList<Double>(), yData1=new ArrayList<Double>();
-
+		
 		int i=0,j=0;
-		double xMax=PhyC.MIN, yMax=PhyC.MIN, xMin=PhyC.MAX, yMin=PhyC.MAX;
+		double rMax=PhyC.MIN, rMin=PhyC.MAX;
 		double cCW=0, cCH=0;
 		int panelW=this.getWidth(), panelH=this.getHeight()-50;
 		String xStr="", yStr=""; 
+		for(i=0;i<radList.size();i++)
+			if(radList.get(i)>rMax) rMax=radList.get(i);
+		cCW=panelW/(sumLength*1.1); cCH=panelH/(rMax*2*1.1);
+		
+		g.drawLine(0, panelH/2, panelW, panelH/2);
+		g.drawLine(0, panelH, panelW, panelH);
+		
+		double nowLength=0.0;
+		for(i=0;i<eNameList.size();i++){
+			if(lenList.get(i)>0){
+				int x=(int)(nowLength*cCW); int width=(int)(lenList.get(i)*cCW);
+				int y=(int)(panelH/2-radList.get(i)*cCH); int height=(int)(radList.get(i)*2*cCH);
+				g.drawRect(x,y,width,height);
+				nowLength+=lenList.get(i);
+			}
+		}
+		
 		
 		this.readPData(dataPath + "/" + fNameList.get(0), pData0);
 		for(i=1;i<fNameList.size();i++){
@@ -168,6 +196,9 @@ class PlotPanel extends JPanel{
             	}
             }
             for(j=0;j<xData0.size();j++){
+            	int x0=(int)(xData0.get(j)*cCW); int x1=(int)(xData1.get(j)*cCH);
+            	int y0=(int)(panelH/2+yData0.get(j)*cCH); int y1=(int)(panelH/2+yData1.get(j)*cCH);
+            	g.drawLine(x0, y0, x1, y1);
             }
             pData0=pData1;
 		}
@@ -219,7 +250,7 @@ public class PlotWindow extends JFrame{
 		String path="/home/zxt/workspace/PBD/test1";
 		PlotWindow npw=new PlotWindow(path);
 		npw.pPanel.plotFName=path + "/Step0000000009.txt";
-		npw.pPanel.plotType=1;
+		npw.pPanel.plotType=4;
 		npw.repaint();
 	}
 
