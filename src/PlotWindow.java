@@ -154,7 +154,50 @@ class PlotPanel extends JPanel{
 		}
 
 	}
+    public void plotTrace(Graphics g){
+		ArrayList<Particle> pData=new ArrayList<Particle>();
+
+		ArrayList<Double> xData=new ArrayList<Double>(), yData=new ArrayList<Double>();
+		
+		int i=0;
+		double rMax=PhyC.MIN, rMin=PhyC.MAX;
+		double cCW=0, cCH=0;
+		int panelW=this.getWidth(), panelH=this.getHeight()-50;
+		for(i=0;i<radList.size();i++)
+			if(radList.get(i)>rMax) rMax=radList.get(i);
+		cCW=panelW/(sumLength*1.1); cCH=panelH/(rMax*2*1.1);
+		
+		g.drawLine(0, panelH/2, panelW, panelH/2);
+		g.drawLine(0, panelH, panelW, panelH);
+		
+		double nowLength=0.0;
+		for(i=0;i<eNameList.size();i++){
+			if(lenList.get(i)>0){
+				int x=(int)(nowLength*cCW); int width=(int)(lenList.get(i)*cCW);
+				int y=(int)(panelH/2-radList.get(i)*cCH); int height=(int)(radList.get(i)*2*cCH);
+				g.drawRect(x,y,width,height);
+				nowLength+=lenList.get(i);
+			}
+		}
+		
+		this.readPData(dataPath + "/" + fNameList.get(plotIndex), pData);
+        for(i=0;i<pData.size();i++){
+        	if(plotType==4){
+        	    xData.add(pData.get(i).s); yData.add(pData.get(i).x);
+        	}
+            if(plotType==5){
+            	xData.add(pData.get(i).s); yData.add(pData.get(i).z);
+            }
+        }
+        for(i=0;i<xData.size();i++){
+            int x=(int)(xData.get(i)*cCW);
+            int y=(int)(panelH/2+yData.get(i)*cCH);
+           	g.fillRect(x, y, 3, 3);
+		}
+	}
+
 	
+/*
 	public void plotTrace(Graphics g){
 		ArrayList<Particle> pData0=new ArrayList<Particle>();
 		ArrayList<Particle> pData1=new ArrayList<Particle>();
@@ -207,11 +250,8 @@ class PlotPanel extends JPanel{
             }
             pData0=pData1;
 		}
-
-		
-		
-
 	}
+	*/
 	
 }
 
@@ -227,23 +267,18 @@ public class PlotWindow extends JFrame{
 			public void actionPerformed(ActionEvent e){
 				if(e.getSource()==bxxp){
 					pPanel.plotType=1;
-     				pPanel.repaint();
 				}
 				else if(e.getSource()==bzzp){
 					pPanel.plotType=2;
-     				pPanel.repaint();
 				}
 				else if(e.getSource()==bxz){
 					pPanel.plotType=3;
-     				pPanel.repaint();
 				}
 				else if(e.getSource()==bsx){
 					pPanel.plotType=4;
-    				pPanel.repaint();
 				}
 				else if(e.getSource()==bsz){
 					pPanel.plotType=5;
-    				pPanel.repaint();
 				}
 				else if(e.getSource()==bnext){
 					if(pPanel.plotIndex<pPanel.fNameList.size()-1)pPanel.plotIndex++;
@@ -253,9 +288,9 @@ public class PlotWindow extends JFrame{
 				else if(e.getSource()==bback){
 					if(pPanel.plotIndex>0)pPanel.plotIndex--;
 					js.setValue(pPanel.plotIndex);
-					if(pPanel.plotType!=4 && pPanel.plotType!=5) pPanel.repaint();
 				}
 				else{}
+   				pPanel.repaint();
 			}
 			
 		};
@@ -307,7 +342,7 @@ public class PlotWindow extends JFrame{
 		js.addChangeListener(new ChangeListener(){
 			public void stateChanged(ChangeEvent e){
 				pPanel.plotIndex=js.getValue();
-        		if(pPanel.plotType!=4 && pPanel.plotType!=5) pPanel.repaint();
+				pPanel.repaint();
 			}
 		});
 		toolBar.add(js);
