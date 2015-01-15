@@ -10,6 +10,7 @@ class PlotPanel extends JPanel{
 	public String dataPath;
 	public int plotType;
 	public int plotIndex;
+	public int traceStep;
 
 	public ArrayList<String> fNameList;
 
@@ -22,6 +23,7 @@ class PlotPanel extends JPanel{
 		dataPath=dPath;
 		plotType=0;
 		plotIndex=0;
+		traceStep=1;
 		eNameList=new ArrayList<Integer>();
 		lenList=new ArrayList<Double>();
 		radList=new ArrayList<Double>();
@@ -147,8 +149,8 @@ class PlotPanel extends JPanel{
 		for(i=0;i<xData.size();i++){
 			double x=xData.get(i), y=yData.get(i);
 			int px=(int)((x-xMin)*cCW);
-			int py=(int)((y-yMin)*cCH);
-			g.fillRect(px, py, 5, 5);
+			int py=(int)((-y-yMin)*cCH);
+			g.fillRect(px, py, 4, 4);
 		}
 
 	}
@@ -184,7 +186,7 @@ class PlotPanel extends JPanel{
 		
 		
 		this.readPData(dataPath + "/" + fNameList.get(0), pData0);
-		for(i=1;i<fNameList.size();i++){
+		for(i=1;i<fNameList.size();i+=traceStep){
             this.readPData(dataPath + "/" + fNameList.get(i), pData1);
             if(plotType==4){
             	for(j=0;j<pData0.size();j++){
@@ -302,7 +304,6 @@ public class PlotWindow extends JFrame{
 		js.setMajorTickSpacing(5);
 		js.setMinorTickSpacing(1);
 		js.setPaintTicks(true);
-		js.setPaintLabels(true);
 		js.addChangeListener(new ChangeListener(){
 			public void stateChanged(ChangeEvent e){
 				pPanel.plotIndex=js.getValue();

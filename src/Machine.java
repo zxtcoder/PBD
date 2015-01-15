@@ -135,9 +135,15 @@ public class Machine {
 		int i=0, j=0;
 		double pNum=0, eNum=0, tmpL1=0, tmpL2=0;
 		double outNum=0;
+//////////////////////////////////////////
 		eNum=eList.size();
 		nowTime=0; nowStep=0;
 		this.calLength();
+		for(Element e: eList){
+			if(e.name==0)((IonSE)e).rT=0;
+		}
+////////////////////////////////////////
+		
 		while(nowTime<sumTime){
 			this.outLog();
 			pNum=pList.size();
