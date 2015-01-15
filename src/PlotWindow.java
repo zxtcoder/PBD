@@ -305,14 +305,15 @@ public class PlotWindow extends JFrame{
 		bzzp.addActionListener(bListener);
 	    bxz=new JButton("X-Z"); bxz.setBounds(200,5,100,30); toolBar.add(bxz);
 		bxz.addActionListener(bListener);
-        bback=new JButton("<"); bback.setBounds(300,5,50,30); toolBar.add(bback);
-		bback.addActionListener(bListener);
-	    bnext=new JButton(">"); bnext.setBounds(350,5,50,30); toolBar.add(bnext);
-		bnext.addActionListener(bListener);
-    	bsx=new JButton("S-X"); bsx.setBounds(400,5,100,30); toolBar.add(bsx);
+    	bsx=new JButton("S-X"); bsx.setBounds(300,5,100,30); toolBar.add(bsx);
 		bsx.addActionListener(bListener);
-	    bsz=new JButton("S-Z"); bsz.setBounds(500,5,100,30); toolBar.add(bsz);
+	    bsz=new JButton("S-Z"); bsz.setBounds(400,5,100,30); toolBar.add(bsz);
 		bsz.addActionListener(bListener);
+        bback=new JButton("<"); bback.setBounds(500,5,50,30); toolBar.add(bback);
+		bback.addActionListener(bListener);
+	    bnext=new JButton(">"); bnext.setBounds(550,5,50,30); toolBar.add(bnext);
+		bnext.addActionListener(bListener);
+
 	}
 
 
