@@ -120,6 +120,9 @@ public class MainWindow extends JFrame{
 				else if(bTmp==bDrawReal){
 					
 				}
+				else if(bTmp==bPlot){
+					PlotWindow pw=new PlotWindow(mac.logName);
+				}
 				else{}
 				
 			}

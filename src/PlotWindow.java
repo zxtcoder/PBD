@@ -225,29 +225,35 @@ public class PlotWindow extends JFrame{
 			public void actionPerformed(ActionEvent e){
 				if(e.getSource()==bxxp){
 					pPanel.plotType=1;
+     				pPanel.repaint();
 				}
 				else if(e.getSource()==bzzp){
 					pPanel.plotType=2;
+     				pPanel.repaint();
 				}
 				else if(e.getSource()==bxz){
 					pPanel.plotType=3;
+     				pPanel.repaint();
 				}
 				else if(e.getSource()==bsx){
 					pPanel.plotType=4;
+    				pPanel.repaint();
 				}
 				else if(e.getSource()==bsz){
 					pPanel.plotType=5;
+    				pPanel.repaint();
 				}
 				else if(e.getSource()==bnext){
 					if(pPanel.plotIndex<pPanel.fNameList.size()-1)pPanel.plotIndex++;
 					js.setValue(pPanel.plotIndex);
+					if(pPanel.plotType!=4 && pPanel.plotType!=5) pPanel.repaint();
 				}
 				else if(e.getSource()==bback){
 					if(pPanel.plotIndex>0)pPanel.plotIndex--;
 					js.setValue(pPanel.plotIndex);
+					if(pPanel.plotType!=4 && pPanel.plotType!=5) pPanel.repaint();
 				}
 				else{}
-				pPanel.repaint();
 			}
 			
 		};
@@ -300,7 +306,7 @@ public class PlotWindow extends JFrame{
 		js.addChangeListener(new ChangeListener(){
 			public void stateChanged(ChangeEvent e){
 				pPanel.plotIndex=js.getValue();
-				pPanel.repaint();
+        		if(pPanel.plotType!=4 && pPanel.plotType!=5) pPanel.repaint();
 			}
 		});
 		toolBar.add(js);
