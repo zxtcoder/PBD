@@ -5,6 +5,7 @@ import java.io.*;
 public class Machine {
 	public ArrayList<Element> eList;
 	public ArrayList<Particle> pList;
+	public ArrayList<Matrix> sigma;
 
 	public double sumTime, sumLength;
 	public double dt, nowTime;
@@ -14,11 +15,79 @@ public class Machine {
 	public Machine(){
 		eList=new ArrayList<Element>();
 		pList=new ArrayList<Particle>();
+		sigma=new ArrayList<Matrix>();
+
 		sumTime=sumLength=0;
 		dt=nowTime=0;
 		nowStep=logStep=0;
 		logName="";
 
+	}
+	
+	public void calSigma(){
+		int i=0, j=0;
+		double nowL=0.0, tmpL1=0, tmpL2=0, ds=0;
+		for(i=0;i<eList.size();i++){
+			if(eList.get(i).name==0){
+				IonSE ionse=(IonSE)eList.get(i);
+				double x0=ionse.xA, xp0=ionse.xpA; double z0=ionse.zA, zp0=ionse.zpA;
+				Matrix ms0=new Matrix(4, 4), ms;
+				Particle p;
+				ms0.setValue(0, 0, x0*x0); ms0.setValue(1, 1, xp0*xp0);
+				ms0.setValue(2, 2, z0*z0); ms0.setValue(3, 3, zp0*zp0);
+				sigma.add(ms0);
+
+				ds=ionse.vs0*dt;
+				nowL=0;
+				while(nowL<sumLength){
+					tmpL1=tmpL2=0;
+					for(j=0;j<eList.size();j++){
+						tmpL1+=eList.get(j).length;
+						if(tmpL1>=nowL){
+							tmpL2=tmpL1-eList.get(j).length;
+							switch(eList.get(j).name){
+							//IonSE
+							case 0:break;
+							//DriftE
+							case 1:
+								ms0=sigma.get(sigma.size()-1);
+                                ms=((DriftE)(eList.get(j))).calSigma(ms0, ds);
+                                sigma.add(ms);
+								break;
+						    //QuadE
+							case 2:
+								ms0=sigma.get(sigma.size()-1);
+								p=new Particle(ionse.pMass, ionse.pCharge, 0, 0, 0, 0, 0, ionse.vs0);
+								ms=((QuadE)(eList.get(j))).calSigma(p, ms0, ds);
+								sigma.add(ms);
+								break;
+							//DiE
+							case 3:
+								ms0=sigma.get(sigma.size()-1);
+                                if(nowL<ds + tmpL2){
+                                	ms=((DiE)(eList.get(j))).calSigma(ms0, ds, 1);
+                                }
+                                else if(nowL>tmpL1 - ds){
+                                	ms=((DiE)(eList.get(j))).calSigma(ms0, ds, 2);
+                                }
+                                else{
+                                	ms=((DiE)(eList.get(j))).calSigma(ms0, ds, 0);
+                                	
+                                }
+                                sigma.add(ms);
+								break;
+							}
+							break;
+						}
+					}
+
+					nowL+=ds;
+				}
+				
+				
+				break;
+			}
+		}
 	}
 	
 	public void clearParticle(){
@@ -103,6 +172,19 @@ public class Machine {
 			    for(Element eTmp: this.eList){
 			    	fW.write(" " + eTmp.radius);
 			    }
+			    fW.close();
+			    
+			    
+			    File sigmaFile=new File(this.logName+"/sigma.txt");
+			    fW=new FileWriter(sigmaFile);
+			    fW.write("x xp z zp\n");
+			    int i=0;
+			    for(i=0;i<sigma.size();i++){
+			    	double x=(sigma.get(i).getValue(0, 0)); double xp=(sigma.get(i).getValue(1, 1));
+			    	double z=(sigma.get(i).getValue(2, 2)); double zp=(sigma.get(i).getValue(3, 3));
+			    	fW.write("" + x + " " + xp + " " + z + " " + zp + "\n");
+			    }
+
 			    fW.close();
 		    }
 		    if(nowStep%logStep==0){
@@ -214,10 +296,11 @@ public class Machine {
 		nm.addIonSEType2(nm.eList.size(),nm.pList, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 		((IonSE)nm.eList.get(0)).setPara2(nm.pList, 10, 100, 2, 1, 100, 1, 1, 0.0001, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1);
 
-		//nm.addDriftE(nm.eList.size(),10, 100);
-		//nm.addQuadE(100, 1000, 1e-10, 1e-10);
+		nm.addDriftE(nm.eList.size(),10, 100);
+		//nm.addQuadE(nm.eList.size(), 100, 1000, 1e-10, 1e-10);
 		//nm.addQuadE(100, 1000, -1e-10, -1e-10);
-		nm.setRunPara(0.1, 1, 1, "test3");
+		nm.setRunPara(0.001, 1, 1, "test3");
+		nm.calSigma();
 		nm.run();
 		nm.outInfo();
 

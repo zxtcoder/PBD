@@ -8,6 +8,16 @@ public class DriftE extends Element{
 	public void setPara(double r, double l){
 		radius=r; length=l;
 	}
+	
+	public Matrix calSigma(Matrix ms0, double ds){
+		Matrix tm=new Matrix(4,4), ttm;
+		Matrix ms=new Matrix(4,4);
+		tm.setValue(0, 0, 1); tm.setValue(0, 1, ds); tm.setValue(1, 0, 0); tm.setValue(1, 1, 1);
+		tm.setValue(2, 2, 1); tm.setValue(2, 3, ds); tm.setValue(3, 2, 0); tm.setValue(3, 3, 1);
+		ttm=tm.tMat();
+		ms=tm.multiMat(ms0.multiMat(ttm));
+		return ms;
+	}
 
 	void calParticle(Particle p, double dt){
 		double ds=p.vs*dt;

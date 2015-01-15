@@ -39,8 +39,17 @@ public class Matrix {
 				m3.setValue(r, c, sum);
 			}
 		}
-
 		return m3;
+	}
+	
+	public Matrix tMat(){
+		Matrix m2=new Matrix(col, row);
+		int i=0,j=0;
+		for(i=0;i<row;i++)
+			for(j=0;j<col;j++)
+				m2.setValue(j, i, mat[j][i]);
+		return m2;
+		
 	}
 	
 ///////////////////////////////////////////////////////
@@ -50,13 +59,16 @@ public class Matrix {
 		Matrix m2=new Matrix(2,2);
 		Matrix m3=new Matrix(2,1);
 		Matrix m4;
+		Matrix m5;
 		m1.setValue(0, 0, 1); m1.setValue(0, 1, 2); m1.setValue(1, 0, 3); m1.setValue(1, 1, 4);
 		m2.setValue(0, 0, 2); m2.setValue(0, 1, 3); m2.setValue(1, 0, 4); m2.setValue(1, 1, 5);
 		m3.setValue(0, 0, 2); m3.setValue(1, 0, 3); 
 		m4=m1.multiMat(m2);
-		for(i=0;i<m4.row;i++){
-			for(j=0;j<m4.col;j++)
-				System.out.printf("%f ", m4.getValue(i, j));
+		m5=m1.tMat();
+
+		for(i=0;i<m5.row;i++){
+			for(j=0;j<m5.col;j++)
+				System.out.printf("%f ", m5.getValue(i, j));
 			System.out.printf("\n");
 		}
 

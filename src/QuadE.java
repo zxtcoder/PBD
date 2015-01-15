@@ -13,6 +13,54 @@ public class QuadE extends Element{
 		radius=r; length=l;
 		kx=kxx; kz=kzz;
 	}
+	
+	public Matrix calSigma(Particle p, Matrix ms0, double ds){
+		Matrix tm=new Matrix(4,4), ttm;
+		Matrix ms=new Matrix(4,4);
+		
+		double Kx=p.charge*PhyC.e*kx/p.mass/PhyC.u/p.vs;
+		double Kz=p.charge*PhyC.e*kz/p.mass/PhyC.u/p.vs;
+		double Kxs=0,Kzs=0,mx00=0,mx01=0,mx10=0,mx11=0,mz00=0,mz01=0,mz10=0,mz11=0;
+		
+		if(Kx>0 && Kz>0){
+
+		    Kxs=Math.sqrt(Kx);
+		    Kzs=Math.sqrt(Kz);
+		
+		    mx00=Math.cos(Kxs*ds);
+		    mx01=1/Kxs*Math.sin(Kxs*ds);
+		    mx10=-1*Kxs*Math.sin(Kxs*ds);
+		    mx11=mx00;
+
+		    mz00=Math.cosh(Kzs*ds);
+		    mz01=1/Kzs*Math.sinh(Kzs*ds);
+		    mz10=Kzs*Math.sinh(Kzs*ds);
+		    mz11=mz00;
+		}
+		
+		if(Kx<0 && Kz<0){
+
+		    Kxs=Math.sqrt(-1*Kx);
+		    Kzs=Math.sqrt(-1*Kz);
+		
+		    mz00=Math.cos(Kzs*ds);
+		    mz01=1/Kzs*Math.sin(Kzs*ds);
+		    mz10=-1*Kzs*Math.sin(Kzs*ds);
+		    mz11=mz00;
+
+		    mx00=Math.cosh(Kxs*ds);
+		    mx01=1/Kxs*Math.sinh(Kxs*ds);
+		    mx10=Kxs*Math.sinh(Kxs*ds);
+		    mx11=mx00;
+		}
+		
+		tm.setValue(0, 0, mx00); tm.setValue(0, 1, mx01); tm.setValue(1, 0, mx10); tm.setValue(1, 1, mx11);
+		tm.setValue(2, 2, mz00); tm.setValue(2, 3, mz01); tm.setValue(3, 2, mz10); tm.setValue(3, 3, mz11);
+		
+		ttm=tm.tMat();
+		ms=tm.multiMat(ms0.multiMat(ttm));
+		return ms;
+	}
 
 	void calParticle(Particle p, double dt){
 		double ds=p.vs*dt;
