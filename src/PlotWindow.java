@@ -6,10 +6,12 @@ import java.util.*;
 import java.io.*;
 
 class PlotPanel extends JPanel{
-	public String dataPath, plotFName;
+	public String dataPath;
 	public int plotType;
+	public int plotIndex;
 
 	public ArrayList<String> fNameList;
+
 	
 	double sumLength;
 	public ArrayList<Double> lenList, radList;
@@ -18,7 +20,7 @@ class PlotPanel extends JPanel{
 	public PlotPanel(String dPath){
 		dataPath=dPath;
 		plotType=0;
-		plotFName="";
+		plotIndex=0;
 		eNameList=new ArrayList<Integer>();
 		lenList=new ArrayList<Double>();
 		radList=new ArrayList<Double>();
@@ -104,7 +106,7 @@ class PlotPanel extends JPanel{
 	
 	public void plotPhase(Graphics g){
 		ArrayList<Particle> pData=new ArrayList<Particle>();
-		readPData(plotFName, pData);
+		readPData(dataPath+"/"+fNameList.get(plotIndex), pData);
 		ArrayList<Double> xData=new ArrayList<Double>(), yData=new ArrayList<Double>();
 
 		int i=0;
@@ -213,6 +215,58 @@ class PlotPanel extends JPanel{
 public class PlotWindow extends JFrame{
 	private PlotPanel pPanel;
 	private JPanel toolBar;
+	private JButton bxxp, bzzp, bxz, bsx, bsz, bnext, bback;
+	private ActionListener bListener;
+	
+	public void listenerInit(){
+		bListener=new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				if(e.getSource()==bxxp){
+					pPanel.plotType=1;
+				}
+				else if(e.getSource()==bzzp){
+					pPanel.plotType=2;
+				}
+				else if(e.getSource()==bxz){
+					pPanel.plotType=3;
+				}
+				else if(e.getSource()==bsx){
+					pPanel.plotType=4;
+				}
+				else if(e.getSource()==bsz){
+					pPanel.plotType=5;
+				}
+				else if(e.getSource()==bnext){
+					if(pPanel.plotIndex<pPanel.fNameList.size()-1)pPanel.plotIndex++;
+				}
+				else if(e.getSource()==bback){
+					if(pPanel.plotIndex>0)pPanel.plotIndex--;
+				}
+				else{}
+				pPanel.repaint();
+			}
+			
+		};
+	}
+	
+	
+	
+	public void buttonInit(){
+		bxxp=new JButton("X-X'"); bxxp.setBounds(0,5,100,30); toolBar.add(bxxp);
+		bxxp.addActionListener(bListener);
+    	bzzp=new JButton("Z-Z'"); bzzp.setBounds(100,5,100,30); toolBar.add(bzzp);
+		bzzp.addActionListener(bListener);
+	    bxz=new JButton("X-Z"); bxz.setBounds(200,5,100,30); toolBar.add(bxz);
+		bxz.addActionListener(bListener);
+        bback=new JButton("<"); bback.setBounds(300,5,50,30); toolBar.add(bback);
+		bback.addActionListener(bListener);
+	    bnext=new JButton(">"); bnext.setBounds(350,5,50,30); toolBar.add(bnext);
+		bnext.addActionListener(bListener);
+    	bsx=new JButton("S-X"); bsx.setBounds(400,5,100,30); toolBar.add(bsx);
+		bsx.addActionListener(bListener);
+	    bsz=new JButton("S-Z"); bsz.setBounds(500,5,100,30); toolBar.add(bsz);
+		bsz.addActionListener(bListener);
+	}
 
 
 	public PlotWindow(String path){
@@ -224,10 +278,14 @@ public class PlotWindow extends JFrame{
 		this.add(pPanel);
 		
 		toolBar=new JPanel();
+		toolBar.setLayout(null);
 		toolBar.setBackground(Color.WHITE);
 		toolBar.setBounds(2, 0, this.getWidth()-8, 100);
 		toolBar.setBorder(new LineBorder(Color.BLACK));
 		this.add(toolBar);
+		
+		listenerInit();
+		buttonInit();
 		
 		this.addComponentListener(new ComponentAdapter(){
 			public void componentResized(ComponentEvent e){
@@ -249,8 +307,8 @@ public class PlotWindow extends JFrame{
 	public static void main(String[] args) {
 		String path="/home/zxt/workspace/PBD/test1";
 		PlotWindow npw=new PlotWindow(path);
-		npw.pPanel.plotFName=path + "/Step0000000009.txt";
-		npw.pPanel.plotType=4;
+		npw.pPanel.plotIndex=8;
+		npw.pPanel.plotType=1;
 		npw.repaint();
 	}
 
