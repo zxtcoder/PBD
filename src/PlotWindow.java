@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import javax.swing.border.*;
+import javax.swing.event.*;
 import java.awt.event.*;
 import java.util.*;
 import java.io.*;
@@ -217,6 +218,7 @@ public class PlotWindow extends JFrame{
 	private JPanel toolBar;
 	private JButton bxxp, bzzp, bxz, bsx, bsz, bnext, bback;
 	private ActionListener bListener;
+	private JSlider js;
 	
 	public void listenerInit(){
 		bListener=new ActionListener(){
@@ -238,9 +240,11 @@ public class PlotWindow extends JFrame{
 				}
 				else if(e.getSource()==bnext){
 					if(pPanel.plotIndex<pPanel.fNameList.size()-1)pPanel.plotIndex++;
+					js.setValue(pPanel.plotIndex);
 				}
 				else if(e.getSource()==bback){
 					if(pPanel.plotIndex>0)pPanel.plotIndex--;
+					js.setValue(pPanel.plotIndex);
 				}
 				else{}
 				pPanel.repaint();
@@ -287,11 +291,27 @@ public class PlotWindow extends JFrame{
 		listenerInit();
 		buttonInit();
 		
+		js=new JSlider(JSlider.HORIZONTAL,0, pPanel.fNameList.size()-1, 0);
+		js.setBounds(0, 40, 800, 30);
+		js.setMajorTickSpacing(5);
+		js.setMinorTickSpacing(1);
+		js.setPaintTicks(true);
+		js.setPaintLabels(true);
+		js.addChangeListener(new ChangeListener(){
+			public void stateChanged(ChangeEvent e){
+				pPanel.plotIndex=js.getValue();
+				pPanel.repaint();
+			}
+		});
+		toolBar.add(js);
+
+		
 		this.addComponentListener(new ComponentAdapter(){
 			public void componentResized(ComponentEvent e){
 				PlotWindow pw=(PlotWindow)e.getSource();
 				pw.pPanel.setBounds(2, 100, pw.getWidth()-8, pw.getHeight()-150);
 				pw.toolBar.setBounds(2, 0, pw.getWidth()-8, 100);
+				pw.js.setBounds(2,40,pw.getWidth()-8, 50);
 				pw.repaint();
 			}
 		});
