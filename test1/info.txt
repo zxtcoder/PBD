@@ -1,7 +1,7 @@
 Name test1
-SumLength 4.0
+SumLength 5.0
 Time 0.5
 dt 0.001
-Name 0 1 2 2 1
-Length 0.0 1.0 1.0 1.0 1.0
-Radius 0.1 0.1 0.1 0.1 0.1
+Name 0 1 2 2 2 1
+Length 0.0 1.0 1.0 1.0 1.0 1.0
+Radius 0.1 0.05 0.1 0.1 0.1 0.1

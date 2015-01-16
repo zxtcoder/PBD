@@ -10,7 +10,6 @@ public class MainWindow extends JFrame{
 /////////////////////////////////////////////////////
 	private JLabel label1;
 	private JButton bIonS, bDrift, bQuad, bDi;
-	private JButton bDetector;
 	private JButton bDel, bRunControl, bDrawReal, bPlot, bStartRun;
 	private JPanel pLine, pControl, toolBar, eleBar, statusBar;
 	private JScrollPane spLine, spControl;
@@ -19,6 +18,7 @@ public class MainWindow extends JFrame{
 	private JMenu[] menus={ new JMenu("File"), new JMenu("Element"), new JMenu("Control"), new JMenu("Help") };
 	private JMenuItem[] fileItem={ new JMenuItem("open"), new JMenuItem("save"), new JMenuItem("close")	};
 	private JMenuItem[] elementItem={ new JMenuItem("IonSource"), new JMenuItem("Drift"), new JMenuItem("Quad"), new JMenuItem("Diode") };
+	private JMenuItem[] ctrlMenuItem={ new JMenuItem("Delete"), new JMenuItem("RunSet"), new JMenuItem("Plot"), new JMenuItem("Run") };
 ///////////////////////////////////////////////////////////
 	private Machine mac;
 	private ArrayList<JButton> eleButton;
@@ -53,7 +53,7 @@ public class MainWindow extends JFrame{
 		//pControl.setBorder(new LineBorder(Color.RED));
 		//pControl.setBounds(10, 370, 770, 200);
 		spControl=new JScrollPane(pControl);
-		spControl.setBounds(10,250,770,290);
+		spControl.setBounds(10,250,770,340);
 	
 		
 		this.add(spLine);
@@ -65,10 +65,11 @@ public class MainWindow extends JFrame{
 		this.eleBarInit();
 		this.statusBarInit();
 
-		this.setTitle("Particle Beam Designer");
+		this.setTitle("Particle Beam Designer by zxt@pku.edu.cn");
 		this.setSize(800, 650);
 		this.setLayout(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setResizable(false);
 		this.setVisible(true);
 	}
 	

@@ -192,18 +192,25 @@ class PlotPanel extends JPanel{
 			if(radList.get(i)>rMax) rMax=radList.get(i);
 		cCW=panelW/(sumLength*1.1); cCH=panelH/(rMax*2*1.1);
 		
-		g.drawLine(0, panelH/2, panelW, panelH/2);
-		g.drawLine(0, panelH, panelW, panelH);
-		
+	
 		double nowLength=0.0;
 		for(i=0;i<eNameList.size();i++){
 			if(lenList.get(i)>0){
 				int x=(int)(nowLength*cCW); int width=(int)(lenList.get(i)*cCW);
 				int y=(int)(panelH/2-radList.get(i)*cCH); int height=(int)(radList.get(i)*2*cCH);
-				g.drawRect(x,y,width,height);
+
+				g.drawRect(x,y,width-2,height-2);
+				g.setColor(Color.LIGHT_GRAY);
+				g.fillRect(x, y, width, height);
+				g.setColor(Color.BLACK);
+				g.drawRect(x, y, width, height);
 				nowLength+=lenList.get(i);
 			}
 		}
+
+		g.drawLine(0, panelH/2, panelW, panelH/2);
+		g.drawLine(0, panelH, panelW, panelH);
+	
 		
 		//////////plot wrap//////////////////////////
 		for(i=1;i<sigmaX.size();i++){
@@ -369,7 +376,7 @@ public class PlotWindow extends JFrame{
 		toolBar.setLayout(null);
 		toolBar.setBackground(Color.WHITE);
 		toolBar.setBounds(2, 0, this.getWidth()-8, 100);
-		toolBar.setBorder(new LineBorder(Color.BLACK));
+		//toolBar.setBorder(new LineBorder(Color.BLACK));
 		this.add(toolBar);
 		
 		listenerInit();
@@ -377,6 +384,7 @@ public class PlotWindow extends JFrame{
 		
 		js=new JSlider(JSlider.HORIZONTAL,0, pPanel.fNameList.size()-1, 0);
 		js.setBounds(0, 40, 800, 30);
+		js.setBackground(Color.WHITE);
 		js.setMajorTickSpacing(5);
 		js.setMinorTickSpacing(1);
 		js.setPaintTicks(true);
@@ -392,15 +400,15 @@ public class PlotWindow extends JFrame{
 		this.addComponentListener(new ComponentAdapter(){
 			public void componentResized(ComponentEvent e){
 				PlotWindow pw=(PlotWindow)e.getSource();
-				pw.pPanel.setBounds(2, 100, pw.getWidth()-8, pw.getHeight()-150);
+				pw.pPanel.setBounds(2, 100, pw.getWidth()-8, pw.getHeight()-130);
 				pw.toolBar.setBounds(2, 0, pw.getWidth()-8, 100);
-				pw.js.setBounds(2,40,pw.getWidth()-8, 50);
+				pw.js.setBounds(2,40,pw.getWidth()-12, 50);
 				pw.repaint();
 			}
 		});
 
 		this.setLayout(null);
-		this.setTitle("Plot Analyse" + path);
+		this.setTitle("Plot Analyse  " + path);
 		this.setSize(800, 600);
 		this.setVisible(true);
 	}
