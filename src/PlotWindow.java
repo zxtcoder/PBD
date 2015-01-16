@@ -18,6 +18,7 @@ class PlotPanel extends JPanel{
 	double sumLength;
 	public ArrayList<Double> lenList, radList;
 	public ArrayList<Integer> eNameList;
+	public ArrayList<Double> sigmaX, sigmaZ;
 
 	public PlotPanel(String dPath){
 		dataPath=dPath;
@@ -27,9 +28,12 @@ class PlotPanel extends JPanel{
 		eNameList=new ArrayList<Integer>();
 		lenList=new ArrayList<Double>();
 		radList=new ArrayList<Double>();
+		sigmaX=new ArrayList<Double>();
+		sigmaZ=new ArrayList<Double>();
 
 		this.getFileList();
 		this.readInfo();
+		this.readSigma();
 	}
 	
 	public void getFileList(){
@@ -45,6 +49,22 @@ class PlotPanel extends JPanel{
 		}
 		fNameList.sort(null);
 
+	}
+	
+	public void readSigma(){
+		File fSigma=new File(dataPath + "/sigma.txt");
+		String tmpLine="";
+		String[] itemTmp;
+		try{
+		    BufferedReader in=new BufferedReader(new FileReader(fSigma));
+		    in.readLine();
+		    while((tmpLine=in.readLine())!=null){
+		    	itemTmp=tmpLine.split(" ");
+		    	sigmaX.add(Double.valueOf(itemTmp[0]));
+		    	sigmaZ.add(Double.valueOf(itemTmp[2]));
+		    }
+		    in.close();
+		}catch(Exception e){}
 	}
 	
 	public void readInfo(){
@@ -154,6 +174,8 @@ class PlotPanel extends JPanel{
 		}
 
 	}
+	
+	
     public void plotTrace(Graphics g){
 		ArrayList<Particle> pData=new ArrayList<Particle>();
 
@@ -163,6 +185,9 @@ class PlotPanel extends JPanel{
 		double rMax=PhyC.MIN, rMin=PhyC.MAX;
 		double cCW=0, cCH=0;
 		int panelW=this.getWidth(), panelH=this.getHeight()-50;
+
+		double ds=sumLength/sigmaX.size();
+				
 		for(i=0;i<radList.size();i++)
 			if(radList.get(i)>rMax) rMax=radList.get(i);
 		cCW=panelW/(sumLength*1.1); cCH=panelH/(rMax*2*1.1);
@@ -180,6 +205,20 @@ class PlotPanel extends JPanel{
 			}
 		}
 		
+		//////////plot wrap//////////////////////////
+		for(i=1;i<sigmaX.size();i++){
+			g.setColor(Color.RED);
+            int x1=0, y1=0, x2=0, y2=0;
+			if(plotType==4){ y1=(int)(panelH/2 + sigmaX.get(i-1)*cCH); x1=(int)(ds*(i-1)*cCW); y2=(int)(panelH/2 + sigmaX.get(i)*cCH); x2=(int)(ds*i*cCW);}
+			if(plotType==5){ y1=(int)(panelH/2 + sigmaZ.get(i-1)*cCH); x1=(int)(ds*(i-1)*cCW); y2=(int)(panelH/2 + sigmaZ.get(i)*cCH); x2=(int)(ds*i*cCW);}
+			g.drawLine(x1, y1, x2, y2);
+			if(plotType==4){ y1=(int)(panelH/2 - sigmaX.get(i-1)*cCH); x1=(int)(ds*(i-1)*cCW); y2=(int)(panelH/2 - sigmaX.get(i)*cCH); x2=(int)(ds*i*cCW);}
+			if(plotType==5){ y1=(int)(panelH/2 - sigmaZ.get(i-1)*cCH); x1=(int)(ds*(i-1)*cCW); y2=(int)(panelH/2 - sigmaZ.get(i)*cCH); x2=(int)(ds*i*cCW);}
+			g.drawLine(x1, y1, x2, y2);
+
+		}
+		/////////////////////////////////////////////
+		
 		this.readPData(dataPath + "/" + fNameList.get(plotIndex), pData);
         for(i=0;i<pData.size();i++){
         	if(plotType==4){
@@ -189,6 +228,7 @@ class PlotPanel extends JPanel{
             	xData.add(pData.get(i).s); yData.add(pData.get(i).z);
             }
         }
+        g.setColor(Color.BLUE);
         for(i=0;i<xData.size();i++){
             int x=(int)(xData.get(i)*cCW);
             int y=(int)(panelH/2+yData.get(i)*cCH);

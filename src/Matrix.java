@@ -47,7 +47,7 @@ public class Matrix {
 		int i=0,j=0;
 		for(i=0;i<row;i++)
 			for(j=0;j<col;j++)
-				m2.setValue(j, i, mat[j][i]);
+				m2.setValue(j, i, mat[i][j]);
 		return m2;
 		
 	}

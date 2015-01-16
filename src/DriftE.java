@@ -47,9 +47,15 @@ public class DriftE extends Element{
 	public static void main(String[] args) {
 		Matrix ms0=new Matrix(4,4);
 		ms0.setValue(0, 0, 1); ms0.setValue(1, 1, 1); ms0.setValue(2, 2, 1); ms0.setValue(3, 3, 1);
+		Matrix tm=new Matrix(4,4);
+
+		tm.setValue(0, 0, 1); tm.setValue(0, 1, 1); tm.setValue(1, 1, 1);
+		tm.setValue(2, 2, 1); tm.setValue(2, 3, 1); tm.setValue(3, 3, 1);
+
 		DriftE de=new DriftE();
 		Matrix ms=de.calSigma(ms0, 1);
-		System.out.println("" + ms0.getValue(0, 0) + " " + ms0.getValue(1, 1));
+		for(int i=0;i<4;i++)
+		    System.out.println("" + ms.getValue(i, 0) + " " + ms.getValue(i, 1) + " " + ms.getValue(i, 2) + " " + ms.getValue(i, 3));
 
 
 

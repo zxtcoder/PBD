@@ -27,6 +27,7 @@ public class Machine {
 	public void calSigma(){
 		int i=0, j=0;
 		double nowL=0.0, tmpL1=0, tmpL2=0, ds=0;
+		this.sigma.clear();
 		for(i=0;i<eList.size();i++){
 			if(eList.get(i).name==0){
 				IonSE ionse=(IonSE)eList.get(i);
@@ -83,8 +84,6 @@ public class Machine {
 
 					nowL+=ds;
 				}
-				
-				
 				break;
 			}
 		}
@@ -180,8 +179,8 @@ public class Machine {
 			    fW.write("x xp z zp\n");
 			    int i=0;
 			    for(i=0;i<sigma.size();i++){
-			    	double x=(sigma.get(i).getValue(0, 0)); double xp=(sigma.get(i).getValue(1, 1));
-			    	double z=(sigma.get(i).getValue(2, 2)); double zp=(sigma.get(i).getValue(3, 3));
+			    	double x=Math.sqrt(sigma.get(i).getValue(0, 0)); double xp=Math.sqrt(sigma.get(i).getValue(1, 1));
+			    	double z=Math.sqrt(sigma.get(i).getValue(2, 2)); double zp=Math.sqrt(sigma.get(i).getValue(3, 3));
 			    	fW.write("" + x + " " + xp + " " + z + " " + zp + "\n");
 			    }
 
@@ -225,6 +224,7 @@ public class Machine {
 			if(e.name==0)((IonSE)e).rT=0;
 		}
 ////////////////////////////////////////
+		this.calSigma();
 		
 		while(nowTime<sumTime){
 			this.outLog();
