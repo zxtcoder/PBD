@@ -367,7 +367,7 @@ public class PlotWindow extends JFrame{
 	public PlotWindow(String path){
 
 		pPanel=new PlotPanel(path);
-		pPanel.setBackground(Color.WHITE);
+		pPanel.setBackground(new Color(222, 222, 255));
 		pPanel.setBorder(new LineBorder(Color.BLACK));
 		pPanel.setBounds(2, 100, this.getWidth()-8, this.getHeight()-150);
 		this.add(pPanel);

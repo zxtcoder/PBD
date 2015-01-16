@@ -15,10 +15,11 @@ public class MainWindow extends JFrame{
 	private JScrollPane spLine, spControl;
 	
 	private JMenuBar mbar;
-	private JMenu[] menus={ new JMenu("File"), new JMenu("Element"), new JMenu("Control"), new JMenu("Help") };
+	private JMenu[] menus={ new JMenu("File"), new JMenu("Help") };
 	private JMenuItem[] fileItem={ new JMenuItem("open"), new JMenuItem("save"), new JMenuItem("close")	};
-	private JMenuItem[] elementItem={ new JMenuItem("IonSource"), new JMenuItem("Drift"), new JMenuItem("Quad"), new JMenuItem("Diode") };
-	private JMenuItem[] ctrlMenuItem={ new JMenuItem("Delete"), new JMenuItem("RunSet"), new JMenuItem("Plot"), new JMenuItem("Run") };
+//	private JMenuItem[] elementItem={ new JMenuItem("IonSource"), new JMenuItem("Drift"), new JMenuItem("Quad"), new JMenuItem("Diode") };
+//	private JMenuItem[] ctrlMenuItem={ new JMenuItem("Delete"), new JMenuItem("RunSet"), new JMenuItem("Plot"), new JMenuItem("Run") };
+	private JMenuItem[] helpMenuItem={ new JMenuItem("About")};
 ///////////////////////////////////////////////////////////
 	private Machine mac;
 	private ArrayList<JButton> eleButton;
@@ -38,7 +39,7 @@ public class MainWindow extends JFrame{
 		controlItem=new ArrayList<Object>();
 		
 		pLine=new JPanel();
-		pLine.setBackground(Color.WHITE);
+		pLine.setBackground(new Color(222,222,255));
 		pLine.setLayout(null);
 		pLine.setPreferredSize(new Dimension(800,100));
 		//pLine.setBorder(new LineBorder(Color.RED));
@@ -48,7 +49,7 @@ public class MainWindow extends JFrame{
 
 		
 		pControl=new JPanel();
-		pControl.setBackground(Color.WHITE);
+		pControl.setBackground(Color.LIGHT_GRAY);
 		pControl.setLayout(null);
 		//pControl.setBorder(new LineBorder(Color.RED));
 		//pControl.setBounds(10, 370, 770, 200);
@@ -138,12 +139,32 @@ public class MainWindow extends JFrame{
 		for(i=0;i<fileItem.length;i++){
 		    menus[0].add(fileItem[i]);
 		}
+		fileItem[2].addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				System.exit(0);
+			}
+		});
+		/*
 		for(i=0;i<elementItem.length;i++){
 		    menus[1].add(elementItem[i]);
 		}
+		for(i=0;i<ctrlMenuItem.length;i++){
+			menus[2].add(ctrlMenuItem[i]);
+		}
+		*/
+		for(i=0;i<helpMenuItem.length;i++){
+			menus[1].add(helpMenuItem[i]);
+		}
+		helpMenuItem[0].addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				JOptionPane.showMessageDialog(null, "Welcome to use PBD!\n Author:ZhangXitong \n Email: zxt@pku.edu.cn \n 2015-01-15");
+			}
+		});
+	
 		for(JMenu jm : menus){
 			mbar.add(jm);
 		}
+		
 		this.setJMenuBar(mbar);
 	}
 	
